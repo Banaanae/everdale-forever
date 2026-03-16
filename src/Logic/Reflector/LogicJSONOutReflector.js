@@ -129,6 +129,14 @@ class LogicJSONOutReflector extends LogicReflector {
         this.endArray();
     }
 
+    reflectNextObject() {
+        if (!this.currentArray)
+            console.error("LogicJSONOutReflector: no array exists");
+
+        this.beginObject(null);
+        return true
+    }
+
     reflectNextInt(value) {
         if (!this.currentArray)
             console.error("LogicJSONOutReflector: no array exists");

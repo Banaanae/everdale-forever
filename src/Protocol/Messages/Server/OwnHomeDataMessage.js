@@ -4,7 +4,10 @@ const LogicJSONOutReflector = require('../../../Logic/Reflector/LogicJSONOutRefl
 const LogicRawInReflector = require('../../../Logic/Reflector/LogicRawInReflector')
 const LogicRawOutReflector = require('../../../Logic/Reflector/LogicRawOutReflector')
 const ByteStream = require('../../../Titan/DataStream/ByteStream')
+const LogicCompressedString = require('../../../Titan/LogicCompressedString')
+const LogicLong = require('../../../Titan/LogicLong')
 const PiranhaMessage = require('../../PiranhaMessage')
+const zlib = require('node:zlib')
 
 class OwnHomeDataMessage extends PiranhaMessage {
     constructor (session) {
@@ -22,7 +25,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
         // 7AB9E8
 
         this.stream.writeLongLong(0, 1)
-        this.stream.writeStringReference("Banaanae")
+        this.stream.writeStringReference('') // Likely  name
         this.stream.writeInt(0) // reg state
         this.stream.writeVInt(0)
         this.stream.writeVInt(0)
@@ -32,17 +35,18 @@ class OwnHomeDataMessage extends PiranhaMessage {
         // 683D00
         // todo - how does code go from reflactable id to vtable, and why is this home so hidden
 
-        // reflectNextReflectable?
+        // reflectNextReflectable
+        this.stream.writeByte(0x00) // bool false - cant get bit packed with bool below
 
-        if (false) {
+        if (true) { // maybe something to do with is new?
             this.stream.writeBoolean(true)
             this.stream.writeLongLong(0, 1)
         } else {
             this.stream.writeBoolean(false)
         }
 
-        this.stream.writeBoolean(true)
-        this.stream.writeString("Banaanae")
+        this.stream.writeBoolean(false)
+        this.stream.writeString('')
         this.stream.writeInt(0)
         this.stream.writeInt(0)
         this.stream.writeInt(0)
@@ -55,11 +59,15 @@ class OwnHomeDataMessage extends PiranhaMessage {
         this.stream.writeBoolean(isRaw)
         if (isRaw) {
             //this.stream.writeBytes(Buffer.from([])) // a1 + 80
-            let dm = new ByteStream()
-            await this.reflect(dm)
-            this.stream.writeBytes(dm.buffer)
+            let reflector = new ByteStream()
+            await this.reflect(reflector)
+            let comp = zlib.deflateSync(reflector.buffer)
+            this.stream.writeBytes(reflector.buffer)
         } else {
-            this.stream.writeString(JSON.stringify((await this.reflect(null)).jsonData)) // a1 + 64
+            //const compressed = new LogicCompressedString(JSON.stringify((await this.reflect(null)).jsonData))
+            //compressed.encode(this.stream) // a1 + 64
+            this.stream.writeString(JSON.stringify((await this.reflect(null)).jsonData))
+            //this.stream.writeString('{"version":1,"missionhash":[],"townhall":1,"rfaid":1,"jivlst":[],"tclst":[],"rfprzcmdlst":[],"buildingsNextId":0,"buildings":[{"id": 0,"data":100000}],"obstacles":[0,1,2],"workersNextId":1,"workers":[6],"itemsNextId":1,"challengesNextId":1,"boatsNextId":1,"cartsNextId":1,"jobsNextId":1,"sitesNextId":1,"boost_pause":false,"challenge_seen":[],"challenge_page_seen":[],"mapRandom":2,"workerRandom":7,"lvlRandom":8,"help_opened":false,"map_visited":false,"time_estimation_seen":false,"photo_mode_seen":false,"boat_energy":1,"boat_energy_reg":1,"chall_energy":1,"chall_energy_reg":1,"constr_energy":1,"constr_energy_reg":1,"move_energy":1,"move_energy_reg":1,"ftue_events":[],"ch_hash":1}')
         }
 
         this.stream.writeLongLong(0, 1)
@@ -76,11 +84,14 @@ class OwnHomeDataMessage extends PiranhaMessage {
 
         this.stream.writeInt(1)
 
-        let rawOut = new LogicRawOutReflector(this.stream);
+        /*let rawOut = new LogicRawOutReflector(this.stream);
         rawOut.reflectArray(1, "chronosEvents");
         let base4 = Buffer.alloc(17);
         this.stream.buffer = Buffer.concat([this.stream.buffer, base4]);
-        this.stream.offset += base4.length;
+        this.stream.offset += base4.length;*/
+        this.stream.writeBoolean(false)
+        this.stream.writeVInt(0)
+
 
         let dump = ""
         this.stream.buffer.forEach(e => {
@@ -90,201 +101,395 @@ class OwnHomeDataMessage extends PiranhaMessage {
     }
 
     async reflect(stream) {
-        let dm;
+        let reflector;
         if (stream === null) {
-            dm = new LogicJSONOutReflector({});
+            reflector = new LogicJSONOutReflector({});
         } else {
-            dm = new LogicRawOutReflector(stream)
+            reflector = new LogicRawOutReflector(stream)
         }
 
-        dm.reflectInt(1, "version", 0)
-        dm.reflectInt(0, "debug_a", 0)
-        dm.reflectLong(0, 0, "check_tok", 0, 0)
+        reflector.reflectInt(1, "version", 0)
+        reflector.reflectInt(0, "debug_a", 0)
+        reflector.reflectLong(0, 0, "check_tok", 0, 0)
 
-        dm.reflectObject("home")
-        dm.reflectLong(0, 1, "id", 0, 0)
-        dm.reflectString("Banaanae", "name", "") //todo last arg
-        dm.reflectInt(1, "m_expLevel", 0)
-        dm.reflectInt(1, "m_reputation", 0)
-        dm.reflectInt(1, "m_cumulativeReputation", 0)
-        dm.reflectInt(1, "m_cumulativeValleyReputation", 0)
-        dm.reflectLong(0, 0, "allianceId", 0, 0)
-        dm.reflectInt(0, "Banner", 0) // only if alliance?
-        dm.reflectString("", "m_facebookId", null)
-        dm.reflectBool(true, "m_nameSetByUser", 0)
-        dm.reflectInt(1, "m_expPoints", 0)
-        dm.reflectInt(1, "m_diamonds", 0)
-        dm.reflectInt(1, "m_freeDiamonds", 0)
-        dm.reflectInt(1, "m_score", 0)
-        dm.reflectInt(0, "m_cumulativePurchasedDiamonds", 0)
-        dm.reflectLong(0, 0, "m_onStrike", 0, 0)
-        dm.reflectInt(1000, "m_lastSeenTime", 0)
-        dm.reflectInt(0, "m_surveyState", 0)
-        dm.reflectBool(false, "m_isTimeZoneOffsetSet")
-        dm.reflectInt(0, "m_isTimeZoneOffset", 0)
-        dm.reflectLong(0, 0, "nameChangeLockedTimeSeconds", 0, 0)
-        dm.reflectInt(0, "m_totalSpendUsdCents", 0)
-        dm.reflectLong(0, 0, "m_lastPurchaseTime", 0, 0)
-        dm.reflectInt(0, "m_totalPurchaseCount", 0)
-        dm.reflectExitObject()
+        if (false) { // is not new
+            reflector.reflectObject("home")
+            reflector.reflectLong(0, 1, "id", 0, 0)
+            reflector.reflectString("Banaanae", "name", "") //todo last arg
+            reflector.reflectInt(1, "m_expLevel", 0)
+            reflector.reflectInt(1, "m_reputation", 0)
+            reflector.reflectInt(1, "m_cumulativeReputation", 0)
+            reflector.reflectInt(1, "m_cumulativeValleyReputation", 0)
+            reflector.reflectLong(0, 0, "allianceId", 0, 0)
+            reflector.reflectInt(0, "Banner", 0) // only if alliance?
+            reflector.reflectString("", "m_facebookId", null)
+            reflector.reflectBool(true, "m_nameSetByUser", 0)
+            reflector.reflectInt(1, "m_expPoints", 0)
+            reflector.reflectInt(1, "m_diamonds", 0)
+            reflector.reflectInt(1, "m_freeDiamonds", 0)
+            reflector.reflectInt(1, "m_score", 0)
+            reflector.reflectInt(0, "m_cumulativePurchasedDiamonds", 0)
+            reflector.reflectLong(0, 0, "m_onStrike", 0, 0)
+            reflector.reflectInt(1000, "m_lastSeenTime", 0)
+            reflector.reflectInt(0, "m_surveyState", 0)
+            reflector.reflectBool(false, "m_isTimeZoneOffsetSet", 0)
+            reflector.reflectInt(0, "m_isTimeZoneOffset", 0)
+            reflector.reflectLong(0, 0, "nameChangeLockedTimeSeconds", 0, 0)
+            reflector.reflectInt(0, "m_totalSpendUsdCents", 0)
+            reflector.reflectLong(0, 0, "m_lastPurchaseTime", 0, 0)
+            reflector.reflectInt(0, "m_totalPurchaseCount", 0)
+            reflector.reflectExitObject()
+        }
 
-        // TODO (a1 + 352) + 16LL
-        // TODO (a1 + 16) + 64LL
+        // sub_446B94
+        // (a1 + 352) + 16LL
+        reflector.reflectIntArray([], "missionhash")
+        reflector.reflectArray(0, "achievements")
+        // ^ if 0 goto LABEL_28
+        reflector.reflectArray(0, "progress")
+        reflector.reflectArray(0, "variables")
+        reflector.reflectArray(0, "techs")
+        reflector.reflectInt(1, "townhall", 0)
+
+        // sub_359F8C
+        // (a1 + 16) + 64LL
+        reflector.reflectString("", "rlnk", "")
+        reflector.reflectInt(-1, "ivs", -1)
+        reflector.reflectInt(-1, "rfs", -1)
+        reflector.reflectLong(0, 1, "rfaid", 0, 0)
+        reflector.reflectString("", "rname", "")
+        reflector.reflectInt(0, "jivsct", 0)
+        reflector.reflectIntArray([], "jivlst") // LongArray
+        reflector.reflectIntArray([], "tclst") // LongArray
+        reflector.reflectArray(0, "tcivnmlst")
+        reflector.reflectIntArray([], "rfprzcmdlst") // LongArray
+
+        reflector.reflectInt(5, "buildingsNextId", 0)
+        reflector.reflectArray(5, "buildings")
+        await this.reflectBuilding(reflector, {id: 0, data: 100000, lvl: 0, x: 33, y: 33, lx: 4, ly: 4, c: 0, t: 0, queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false})
+        await this.reflectBuilding(reflector, {id: 1, data: 100012, lvl: 0, x: 39, y: 39, lx: 2, ly: 2, c: 0, t: 0, queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false})
+        await this.reflectBuilding(reflector, {id: 2, data: 100024, lvl: 0, x: 38, y: 29, lx: 2, ly: 2, c: 0, t: 0, queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false})
+        await this.reflectBuilding(reflector, {id: 3, data: 100034, lvl: 0, x: 38, y: 33, lx: 4, ly: 4, c: 0, t: 0, queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false})
+        await this.reflectBuilding(reflector, {id: 4, data: 100159, lvl: 0, x: 64, y: 36, lx: 2, ly: 2, c: 0, t: 0, queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false})
+        reflector.reflectExitArray()
+
+        reflector.reflectInt(1, "obstaclesNextId", 0)
+        reflector.reflectArray(1, "obstacles")
+        await this.reflectObstacle(reflector, {id: 0, data: 500051, lvl: 0, x: 0, y: 0, lx: 5, ly: 5, clear_t: {high: 0, low: 0}, timer_g: {high: 0, low: 0}, grow_t: 100, harv_p: false, harv: 0, fade: 0, harv_l: [], qid: -1})
+        reflector.reflectExitArray()
+
+        reflector.reflectInt(1, "workersNextId", 0)
+        reflector.reflectArray(1, "workers")
+        await this.reflectWorker(reflector, {id: 0, data: 3100006, nameIdx: 0, customName: "", xp: 0, lvl_claim: false, join: {high: 0, low: 0}, hunger: 1, hunger_max: 2, eat: 0, sleep_t: 10, at_sleep: false, reason: 0, targ_x: -1, targ_y: -1, tools2: [], awayv: {high: 0, low: 0}, away: 0, awayt: 0, visit: {high: 0, low: 0}, visitw: 0, visitf: false, spclevel: [], spcxp: [], cresn: 0, skinv: 0, qid: -1, hire: 0, hires: 0})
+        reflector.reflectExitArray()
+
+        reflector.reflectInt(0, "itemsNextId", 0)
+        reflector.reflectArray(0, "items")/* remember set 1
+        reflector.reflectNextObject()
+        reflector.reflectInt(0, "id", null)
+        reflector.reflectInt(-100000, "data", 0)
+        reflector.reflectExitObject()
+        reflector.reflectExitArray()*/
+
+        reflector.reflectInt(0, "challengesNextId", 0)
+        reflector.reflectArray(0, "challenges")
+
+        reflector.reflectInt(0, "boatsNextId", 0)
+        reflector.reflectArray(0, "boats")
+
+        reflector.reflectInt(0, "cartsNextId", 0)
+        reflector.reflectArray(0, "carts")
+
+        reflector.reflectInt(0, "jobsNextId", 0)
+        reflector.reflectArray(0, "jobs")
+
+        reflector.reflectInt(0, "sitesNextId", 0)
+        reflector.reflectArray(0, "sites")
 
         // sub_33E848
-        dm.reflectArray(0, "instances")
+        reflector.reflectArray(0, "instances")
 
         // sub_6042D0
-        dm.reflectObject("offerManager")
-        dm.reflectExitObject()
+        //reflector.reflectObject("offerManager")
+        //reflector.reflectExitObject()
 
         // sub_AC87D8
-        dm.reflectObject("techTree")
-        dm.reflectExitObject()
+        //reflector.reflectObject("techTree")
+        //reflector.reflectExitObject()
 
         // if (a4 & 1) != 0
         // sub_8E9EDC
-        dm.reflectArray(0, "events")
+        reflector.reflectArray(0, "events")
 
         // wnotes 1004
+        reflector.reflectArray(0, "wnotes")
 
-        dm.reflectLong(0, 0, "boost_timer", 0, 0)
-        dm.reflectBool(false, "boost_pause", 0)
-        dm.reflectLong(0, 0, "boosts_regen", 0, 0)
-        dm.reflectLong(0, 0, "boosts_spent", 0, 0)
-        dm.reflectInt(0, "boost_fills", 0)
-        dm.reflectInt(0, "last_alliance_level", 0)
+        reflector.reflectLong(0, 0, "boost_timer", 0, 0)
+        reflector.reflectBool(false, "boost_pause", 0)
+        reflector.reflectLong(0, 0, "boosts_regen", 0, 0)
+        reflector.reflectLong(0, 0, "boosts_spent", 0, 0)
+        reflector.reflectInt(0, "boost_fills", 0)
+        reflector.reflectInt(0, "last_alliance_level", 0)
 
         // mail manager
 
-        dm.reflectInt(0, "leave_reason", 0)
-        dm.reflectIntArray([], "challenge_seen")
-        dm.reflectIntArray([], "challenge_page_seen")
-        dm.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "mapRandom")
-        dm.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "workerRandom")
-        dm.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "lvlRandom")
-        dm.reflectLong(0, 0, "on_strike", 0, 0)
-        dm.reflectLong(0, 0, "joined_nation", 0, 0)
-        dm.reflectLong(0, 0, "own_act_c", 0, 0)
+        reflector.reflectInt(0, "leave_reason", 0)
+        reflector.reflectIntArray([], "challenge_seen")
+        reflector.reflectIntArray([], "challenge_page_seen")
+        reflector.reflectArray(0, "respawnCycles")
+        reflector.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "mapRandom")
+        reflector.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "workerRandom")
+        reflector.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "lvlRandom")
+        reflector.reflectBool(0, "on_strike", 0)
+        reflector.reflectBool(0, "joined_nation", 0)
+        reflector.reflectInt(0, "own_act_c", 0)
 
-        // 3 dynamic longs
+        // 4 dynamic bools
         // dword_125A9CC qword_125A9D0
+        reflector.reflectBool(false, "help_opened")
         // dword_1263AA4 qword_1263AA8
+        reflector.reflectBool(false, "map_visited")
         // dword_1267024 qword_1267028
+        reflector.reflectBool(false, "time_estimation_seen")
+        // dword_125E0EC qword_125E0F0
+        reflector.reflectBool(false, "photo_mode_seen")
 
         // sub_4BCCB0
-        dm.reflectObject("questMan")
-        dm.reflectExitObject()
+        // reflector.reflectObject("questMan")
+        // reflector.reflectExitObject()
 
         // sub_9734D8
-        dm.reflectObject("toolInv")
+        /*reflector.reflectObject("toolInv")
         // tools 1003
-        dm.reflectRandom(4, "random") // todo
-        dm.reflectInt(5, "cap")
-        dm.reflectExitObject()
+        reflector.reflectRandom(4, "random") // todo
+        reflector.reflectInt(5, "cap")
+        reflector.reflectExitObject()*/
 
         //sub_3C36A0
-        dm.reflectObject("reputation_manager")
+        reflector.reflectObject("reputation_manager")
         // claimed 64
         // income 64
-        dm.reflectInt(0, "income_cnt", 0)
-        dm.reflectInt(0, "lsr", 0)
-        dm.reflectInt(0, "mlmr", 0)
-        dm.reflectExitObject()
+        reflector.reflectInt(0, "income_cnt", 0)
+        reflector.reflectInt(0, "lsr", 0)
+        reflector.reflectInt(0, "mlmr", 0)
+        reflector.reflectExitObject()
 
         //sub_4460F8
-        dm.reflectObject("missionManager")
-        dm.reflectString("", "mn", null)
-        dm.reflectInt(0, "s", 0)
-        dm.reflectInt(0, "r", 0)
-        dm.reflectIntArray([], "et")
-        dm.reflectArray(0, "ed")
+        /*reflector.reflectObject("missionManager")
+        reflector.reflectString("", "mn", null)
+        reflector.reflectInt(0, "s", 0)
+        reflector.reflectInt(0, "r", 0)
+        reflector.reflectIntArray([], "et")
+        reflector.reflectArray(0, "ed")
         // reflectNextReflectablePointer
         // todo
-        dm.reflectExitObject()
+        reflector.reflectExitObject()*/
 
         //sub_927EB4
-        dm.reflectObject("ttphelp")
+        /*reflector.reflectObject("ttphelp")
         // idk what this does/is for
-        dm.reflectExitObject()
+        reflector.reflectExitObject()*/
 
-        // TODO LogicJsonOutReflector + 352LL
+        // LogicJsonOutReflector::fixReferences
 
-        dm.reflectInt(1, "boat_energy", 0)
-        dm.reflectInt(1, "boat_energy_reg", 0)
-        dm.reflectInt(1, "chall_energy", 0)
-        dm.reflectInt(1, "constr_energy", 0)
-        dm.reflectInt(1, "constr_energy_reg", 0)
-        dm.reflectInt(1, "move_energy", 0)
-        dm.reflectInt(1, "move_energy_reg", 0)
-        dm.reflectArray(0, "known")
+        reflector.reflectInt(1, "boat_energy", 0)
+        reflector.reflectInt(1, "boat_energy_reg", 0)
+        reflector.reflectInt(1, "chall_energy", 0)
+        reflector.reflectInt(1, "chall_energy_reg", 0)
+        reflector.reflectInt(1, "constr_energy", 0)
+        reflector.reflectInt(1, "constr_energy_reg", 0)
+        reflector.reflectInt(1, "move_energy", 0)
+        reflector.reflectInt(1, "move_energy_reg", 0)
+        reflector.reflectArray(0, "known")
         // ^ if 0 goto LABEL_51
 
-        dm.reflectObject("nation")
-        dm.reflectLong(0, 0, 0, "ff_lock", 0)
-        dm.reflectInt(1, "version", 0)
-        dm.reflectObject("time")
-        dm.reflectInt(Math.floor(Date.now() / 1000))
-        dm.reflectExitObject()
-        dm.reflectLong(0, 0, 0, "offset_time", 0)
-        dm.reflectInt(1, "rand_index", 0)
-        dm.reflectInt(1, "rand_gen", 0)
-        // members 1005
-        dm.reflectInt(0, "vote_c", 0)
-        // votes 1200
-        dm.reflectArray(0, "perks")
-        // ^ if 0 goto LABEL_34
-        dm.reflectInt(0, "perks_end", 0)
-        dm.reflectArray(0, "perks_end") // LogicLongArray
-        dm.reflectInt(0, "request_id", 0)
-        // request 1007
-        dm.reflectObject("objects")
-        // TODO
-        dm.reflectExitObject()
-        // Dynamic reflectNextReflectable (a1 + 31) + 24
-        // log 1010
-        dm.reflectInt(0, "n_log", 0)
-        dm.reflectInt(0, "colorIndex", 0)
-        // trel 1001
-        dm.reflectExitObject()
-        dm.reflectArray(0, "ntfs")
+        const playerHasJoinedValley = false // temp for now
+        if (playerHasJoinedValley) {
+            // sub_3A6DFC
+            reflector.reflectObject("nation")
+            reflector.reflectLong(0, 0, "ff_lock", 0, 0)
+            reflector.reflectInt(1, "version", 0)
+            reflector.reflectObject("time")
+            // sub_82D054
+            const tick = Math.floor(Date.now() / 1000)
+            reflector.reflectLong(tick >> 32, tick < 0 ? tick | 0x80000000 : tick & 0x7FFFFFFF, "tick", 0, 0)
+            reflector.reflectExitObject()
+            reflector.reflectLong(0, 0, "offset_time", 0, 0)
+            // sub_868744
+            reflector.reflectLong(0, 0, "id", 0, 0)
+            reflector.reflectLong(0, 0, "createdTime", 0, 0)
+            reflector.reflectInt(0, "badgeInfo", 0)
+            reflector.reflectInt(0, "expLevel", 0)
+            reflector.reflectInt(0, "expPoints", 0)
+            reflector.reflectInt(0, "challengeScore", 0)
+            reflector.reflectString("nation name", "name", "")
+            reflector.reflectInt(1, "memberCount", 0)
+            reflector.reflectInt(6, "maxMemberCount", 0)
+            reflector.reflectInt(0, 0, "lastMemberJoinedTick", 0, 0)
+            reflector.reflectInt(1, "preferredLanguageId", 0)
+            reflector.reflectString("description lol", "desc", "")
+            reflector.reflectInt(1, "minLevel", 0)
+            reflector.reflectInt(1, "minRep", 0)
+            reflector.reflectInt(1, "createType", 0)
+            reflector.reflectInt(1, "accessType", 0)
+            reflector.reflectInt(1, "matchType", 0)
+            reflector.reflectString("English", "chatLocale")
+            reflector.reflectArray(0, "tags")
+            // ^ if 0 return
+
+            reflector.reflectInt(1, "rand_index", 0)
+            reflector.reflectInt(1, "rand_gen", 0)
+            // members 1005
+            reflector.reflectInt(0, "vote_c", 0)
+            // votes 1200
+            reflector.reflectArray(0, "perks")
+            // ^ if 0 goto LABEL_34
+            reflector.reflectInt(0, "perks_end", 0)
+            reflector.reflectArray(0, "perks_end") // LogicLongArray
+            reflector.reflectInt(0, "request_id", 0)
+            // request 1007
+            reflector.reflectObject("objects")
+            // TODO
+            reflector.reflectExitObject()
+            // Dynamic reflectNextReflectable (a1 + 31) + 24
+            // log 1010
+            reflector.reflectInt(0, "n_log", 0)
+            reflector.reflectInt(0, "colorIndex", 0)
+            // trel 1001
+            reflector.reflectExitObject()
+        }
+        reflector.reflectArray(0, "ntfs")
         // ^ if 0 goto LABEL_106
 
         // sub_69FF44
 
-        dm.reflectInt(0, "ntf_chat_pref")
-        dm.reflectFloat(0.0, "ntf_valley", 0)
-        dm.reflectFloat(0.0, "ntf_village", 0)
+        reflector.reflectInt(0, "ntf_chat_pref", 0)
+        reflector.reflectBool(0, "ntf_valley", 0)
+        reflector.reflectBool(0, "ntf_village", 0)
 
         // TODO: sub_3D11B0
         // Array (a1 + 696) + 12
 
-        dm.reflectIntArray([], "ftue_events")
-        dm.reflectInt(0, "valley_tasks", 0)
+        reflector.reflectIntArray([], "ftue_events")
+        reflector.reflectInt(0, "valley_tasks", 0)
 
         // TODO: sub_BB2548
         // TODO: sub_B17594
         // TODO: sub_B17594
 
-        dm.reflectObject("eventManager")
+        /*reflector.reflectObject("eventManager")
         // sub_5700FC
         // squad doesnt require below so hopefully we are good too
         // upcoming -1
         // active -1
         // activeTransientEvents -1
-        dm.reflectInt(0, "pendingChronosOfferId", 0)
-        dm.reflectObject("purchaseCounts")
-        dm.reflectExitObject()
-        dm.reflectObject("seenActiveEventIds")
-        dm.reflectExitObject()
-        dm.reflectExitObject()
-        dm.reflectObject("history")
+        reflector.reflectInt(0, "pendingChronosOfferId", 0)
+        reflector.reflectObject("purchaseCounts")
+        reflector.reflectExitObject()
+        reflector.reflectObject("seenActiveEventIds")
+        reflector.reflectExitObject()
+        reflector.reflectExitObject()
+        reflector.reflectObject("history")
         // past_members
-        dm.reflectExitObject()
-        dm.reflectInt(0, "known_pc", 0)
-        dm.reflectString("a333e3cb0c67e89472a844a2c4e1ece810fed803", "ch_hash", 0) // TODO
+        reflector.reflectExitObject()*/
+        reflector.reflectInt(0, "known_pc", 0)
+        reflector.reflectLong(0, 1, "ch_hash", 0, 0) // TODO
 
-        return dm
+        return reflector
+    }
+    async reflectBuilding(reflector, data) {
+        reflector.reflectNextObject()
+        reflector.reflectInt(data.id, "id", null) // todo: can be 0?
+        reflector.reflectInt(data.data, "data", 0) // pointer base - good enough for now
+        reflector.reflectInt(data.lvl, "lvl", 0)
+        reflector.reflectInt(data.x, "x", 0)
+        reflector.reflectInt(data.y, "y", 0)
+        reflector.reflectInt(data.lx, "lx", 0)
+        reflector.reflectInt(data.ly, "ly", 0)
+        reflector.reflectArray(data.t, "t") // tools?
+        reflector.reflectArray(data.c, "c") // carts?
+        reflector.reflectIntArray(data.queue, "queue")
+        // optional object
+        reflector.reflectIntArray(data.m_workers, "m_workers")
+        reflector.reflectInt(data.state, "state", 0)
+        reflector.reflectIntArray(data.sites, "sites")
+        reflector.reflectInt(data.orientation, "orientation", 0)
+        reflector.reflectInt(data.roofc, "roofc", 0) // ..colour?
+        reflector.reflectBool(data.stored, "stored")
+        // pointer base skin
+        reflector.reflectExitObject()
+    }
+
+    async reflectObstacle(reflector, data) {
+        reflector.reflectNextObject()
+        reflector.reflectInt(data.id, "id", null)
+        reflector.reflectInt(data.data, "data", 0)
+        reflector.reflectInt(data.lvl, "lvl", 0)
+        reflector.reflectInt(data.x, "x", 0)
+        reflector.reflectInt(data.y, "y", 0)
+        reflector.reflectInt(data.lx, "lx", 0)
+        reflector.reflectInt(data.ly, "ly", 0)
+        reflector.reflectLong(data.clear_t.high, data.clear_t.low, "clear_t", 0, 0)
+        reflector.reflectLong(data.timer_g.high, data.timer_g.low, "timer_g", 0, 0)
+        reflector.reflectInt(data.grow_t, "grow_t", 0)
+        reflector.reflectBool(data.harv_p, "harv_p")
+        reflector.reflectInt(data.harv, "harv", 0)
+        reflector.reflectInt(data.fade, "fade", 0)
+        reflector.reflectIntArray(data.harv_l, "harv_l")
+        reflector.reflectInt(data.qid, "qid", -1)
+        reflector.reflectExitObject()
+    }
+
+    async reflectWorker(reflector, data) {
+        reflector.reflectNextObject()
+        reflector.reflectInt(data.id, "id", null)
+        reflector.reflectInt(data.data, "data", 0)
+        reflector.reflectInt(0, "lvl", 0)
+        reflector.reflectInt(0, "x", 0)
+        reflector.reflectInt(0, "y", 0)
+        reflector.reflectInt(0, "lx", 0)
+        reflector.reflectInt(0, "ly", 0)
+        reflector.reflectInt(data.nameIdx, "nameIdx", 0)
+        reflector.reflectString(data.customName, "customName", "")
+        reflector.reflectInt(data.xp, "xp", 0)
+        reflector.reflectBool(data.lvl_claim, "lvl_claim")
+        // pointer base prof
+        // pointer base prof_a
+        reflector.reflectLong(data.join.high, data.join.low, "join", 0, 0)
+        reflector.reflectInt(data.hunger, "hunger", 0)
+        reflector.reflectInt(data.hunger_max, "hunger_max", 0)
+        reflector.reflectInt(data.eat, "eat", 0)
+        reflector.reflectInt(data.sleep_t, "sleep_t", 0)
+        reflector.reflectBool(data.at_sleep, "at_sleep")
+        // +344LL move
+        // +344LL visit_object
+        reflector.reflectInt(data.reason, "reason", 0)
+        reflector.reflectInt(data.targ_x, "targ_x", -1)
+        reflector.reflectInt(data.targ_y, "targ_y", -1)
+        //reflector.reflectObject("movementSystem")
+        // sub_A6DFFC
+        //reflector.reflectExitObject()
+        reflector.reflectArray(0, "tools2")
+        reflector.reflectLong(data.awayv.high, data.awayv.low, "awayv", 0, 0)
+        reflector.reflectInt(data.away, "away", 0)
+        reflector.reflectInt(data.awayt, "awayt", 0)
+        reflector.reflectLong(data.visit.high, data.visit.low, "visit", 0, 0)
+        reflector.reflectInt(data.visitw, "visitw", 0)
+        reflector.reflectBool(data.visitf, "visitf")
+        // pointer base cdata
+        reflector.reflectIntArray([], "spclevel")
+        reflector.reflectIntArray([], "spcxp")
+        // pointer base cspc
+        // pointer base cres
+        reflector.reflectInt(data.cresn, "cresn", 0)
+        // pointer base skin
+        // pointer base skin2
+        reflector.reflectInt(data.skinv, "skinv", 0)
+        reflector.reflectInt(data.qid, "qid", -1)
+        reflector.reflectInt(data.hire, "hire", 0)
+        reflector.reflectInt(data.hires, "hires", 0)
+        // +344LL hangout
+        reflector.reflectExitObject()
     }
 }
 

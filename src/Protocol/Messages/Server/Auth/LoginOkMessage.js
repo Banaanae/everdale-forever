@@ -25,7 +25,7 @@ class LoginOkMessage extends PiranhaMessage {
         this.stream.writeInt(0);
         this.stream.writeInt(0);
         this.stream.writeString("");
-        this.stream.writeString(Date.now().toString());
+        this.stream.writeString((Date.now() / 1000).toString());
         this.stream.writeString("1714237625000");
         this.stream.writeInt(0);
         this.stream.writeString("");
@@ -35,8 +35,9 @@ class LoginOkMessage extends PiranhaMessage {
         this.stream.writeString("https://assets.everdalegame.com");
         this.stream.writeString("https://game-assets.everdalegame.com");
         this.stream.writeString("");
-        const scidToken = new LogicCompressedString("")
-        scidToken.encode(this.stream)
+        //const scidToken = new LogicCompressedString("1234567890")
+        //scidToken.encode(this.stream)
+        this.stream.writeInt(0)
         this.stream.writeBoolean(true);
         this.stream.writeBoolean(false);
         this.stream.writeBoolean(false);

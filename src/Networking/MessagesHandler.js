@@ -24,6 +24,11 @@ class MessagesHandler {
 
         if (!MessageHandler) {
             this.session.warn(`Gotcha unhandled ${id} packet!`)
+            let dump = ""
+            bytes.forEach(e => {
+                dump += e.toString(16).padStart(2, '0') + " "
+            });
+            console.log(dump)
             return
         }
 
