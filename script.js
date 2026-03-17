@@ -11,9 +11,12 @@ function exceptionHandler() {
         console.log("Address:", e.address);
 
         if (e.context) {
-            console.log("PC:", e.context.pc);
-            console.log("LR:", e.context.lr);
-            console.log("SP:", e.context.sp);
+            let pc = Process.findModuleByAddress(e.context.pc)
+            let lr = Process.findModuleByAddress(e.context.lr)
+            let sp = Process.findModuleByAddress(e.context.sp)
+            console.log("PC:", e.context.pc, pc?.name ?? "null");
+            console.log("LR:", e.context.lr, lr?.name ?? "null");
+            console.log("SP:", e.context.sp, sp?.name ?? "null");
 
             console.log("\nBacktrace:");
             console.log(
@@ -130,8 +133,8 @@ function killCrypto() {
     });
 
     // Messaging::encryptAndWrite
-	Memory.protect(base.add(0x6976AC), 4, 'rwx');
-	base.add(0x6976AC).writeByteArray([0x08, 0x00, 0x00, 0x14]);
+    Memory.protect(base.add(0x6976A0), 4, 'rwx');
+    base.add(0x6976A0).writeByteArray([0x80, 0xEE, 0x84, 0xD2]) // MOV X0, #0x2774
 
     Interceptor.attach(base.add(0x7FC368), { //Application::getDeviceVerificationResult
         onLeave: function (retval) {
