@@ -108,7 +108,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
             reflector = new LogicRawOutReflector(stream)
         }
 
-        reflector.reflectInt(1, "version", 0)
+        reflector.reflectInt(11, "version", 0)
         reflector.reflectInt(0, "debug_a", 0)
         reflector.reflectLong(0, 0, "check_tok", 0, 0)
 
@@ -149,14 +149,14 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectArray(0, "progress")
         reflector.reflectArray(0, "variables")
         reflector.reflectArray(0, "techs")
-        reflector.reflectInt(1, "townhall", 0)
+        reflector.reflectInt(0, "townhall", 0)
 
         // sub_359F8C
         // (a1 + 16) + 64LL
         reflector.reflectString("", "rlnk", "")
         reflector.reflectInt(-1, "ivs", -1)
         reflector.reflectInt(-1, "rfs", -1)
-        reflector.reflectLong(0, 1, "rfaid", 0, 0)
+        reflector.reflectLong(0, 0, "rfaid", 0, 0)
         reflector.reflectString("", "rname", "")
         reflector.reflectInt(0, "jivsct", 0)
         reflector.reflectIntArray([], "jivlst") // LongArray
@@ -180,7 +180,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
 
         reflector.reflectInt(1, "workersNextId", 0)
         reflector.reflectArray(1, "workers")
-        await this.reflectWorker(reflector, {id: 0, data: 3100006, nameIdx: 0, customName: "", xp: 0, lvl_claim: false, join: {high: 0, low: 0}, hunger: 1, hunger_max: 2, eat: 0, sleep_t: 10, at_sleep: false, reason: 0, targ_x: -1, targ_y: -1, tools2: [], awayv: {high: 0, low: 0}, away: 0, awayt: 0, visit: {high: 0, low: 0}, visitw: 0, visitf: false, spclevel: [], spcxp: [], cresn: 0, skinv: 0, qid: -1, hire: 0, hires: 0})
+        await this.reflectWorker(reflector, {id: 0, data: 3100006, nameIdx: 0, customName: "", xp: 0, lvl_claim: false, join: {high: 0, low: 0}, hunger: 9999, hunger_max: 10000, eat: 0, sleep_t: 10, at_sleep: false, reason: 0, targ_x: -1, targ_y: -1, tools2: [], awayv: {high: 0, low: 0}, away: 0, awayt: 0, visit: {high: 0, low: 0}, visitw: 0, visitf: false, spclevel: [], spcxp: [], cresn: 0, skinv: 0, qid: -1, hire: 0, hires: 0})
         reflector.reflectExitArray()
 
         reflector.reflectInt(0, "itemsNextId", 0)
@@ -200,6 +200,8 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectInt(0, "cartsNextId", 0)
         reflector.reflectArray(0, "carts")
 
+        reflector.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "goRandom")
+
         reflector.reflectInt(0, "jobsNextId", 0)
         reflector.reflectArray(0, "jobs")
 
@@ -214,22 +216,32 @@ class OwnHomeDataMessage extends PiranhaMessage {
         //reflector.reflectExitObject()
 
         // sub_AC87D8
-        //reflector.reflectObject("techTree")
-        //reflector.reflectExitObject()
+        reflector.reflectObject("techTree")
+        reflector.reflectArray(0, "progress")
+        reflector.reflectArray(0, "completed")
+        reflector.reflectArray(0, "notif")
+        reflector.reflectInt(0, "kpoints", 0)
+        reflector.reflectExitObject()
 
         // if (a4 & 1) != 0
         // sub_8E9EDC
         reflector.reflectArray(0, "events")
 
         // wnotes 1004
-        reflector.reflectArray(0, "wnotes")
+        reflector.reflectArray(0, "wnotes")/*
+        reflector.reflectNextObject()
+        reflector.reflectLong(0, 1, "home", 0, 0)
+        reflector.reflectBool(false, "res")
+        reflector.reflectInt(0, "cdata", 0)
+        reflector.reflectExitObject()
+        reflector.reflectExitArray()*/
 
         reflector.reflectLong(0, 0, "boost_timer", 0, 0)
         reflector.reflectBool(false, "boost_pause", 0)
         reflector.reflectLong(0, 0, "boosts_regen", 0, 0)
         reflector.reflectLong(0, 0, "boosts_spent", 0, 0)
         reflector.reflectInt(0, "boost_fills", 0)
-        reflector.reflectInt(0, "last_alliance_level", 0)
+        reflector.reflectInt(0, "last_alliance_level", 1)
 
         // mail manager
 
@@ -237,6 +249,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectIntArray([], "challenge_seen")
         reflector.reflectIntArray([], "challenge_page_seen")
         reflector.reflectArray(0, "respawnCycles")
+        reflector.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "respawnRandom")
         reflector.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "mapRandom")
         reflector.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "workerRandom")
         reflector.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "lvlRandom")
@@ -255,35 +268,51 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectBool(false, "photo_mode_seen")
 
         // sub_4BCCB0
-        // reflector.reflectObject("questMan")
-        // reflector.reflectExitObject()
+        /*
+        reflector.reflectObject("questMan")
+        reflector.reflectArray(0, "qarr")
+        reflector.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "random")
+        reflector.reflectInt(1, "qid", 1)
+        reflector.reflectExitObject()
+        reflector.reflectObject("cycle")
+        reflector.reflectInt(34, "data", 34)
+        reflector.reflectInt(0, "id", 0)
+        reflector.reflectInt(0, "cd", 0)
+        reflector.reflectInt(0, "is", 0)
+        reflector.reflectInt(0, "cs", 0)
+        reflector.reflectInt(0, "ii", 0)
+        reflector.reflectInt(0, "ci", 0)
+        reflector.reflectInt(0, "t ", 0)
+        reflector.reflectBool(false, "l", false)
+        reflector.reflectReflectablePointerBase(100000, "p", -1)
+        reflector.reflectInt(0, "ntt", 0)
+        reflector.reflectExitObject()*/
 
         // sub_9734D8
-        /*reflector.reflectObject("toolInv")
-        // tools 1003
+        reflector.reflectObject("toolInv")
+        reflector.reflectArray(0, "tools")
         reflector.reflectRandom(4, "random") // todo
-        reflector.reflectInt(5, "cap")
-        reflector.reflectExitObject()*/
+        reflector.reflectInt(30, "cap", 30)
+        reflector.reflectExitObject()
 
         //sub_3C36A0
         reflector.reflectObject("reputation_manager")
-        // claimed 64
-        // income 64
+        reflector.reflectArray(0, "claimed")
+        reflector.reflectArray(0, "income")
         reflector.reflectInt(0, "income_cnt", 0)
         reflector.reflectInt(0, "lsr", 0)
         reflector.reflectInt(0, "mlmr", 0)
         reflector.reflectExitObject()
 
         //sub_4460F8
-        /*reflector.reflectObject("missionManager")
-        reflector.reflectString("", "mn", null)
+        reflector.reflectObject("missionManager")
+        reflector.reflectString("", "mn", "")
         reflector.reflectInt(0, "s", 0)
         reflector.reflectInt(0, "r", 0)
         reflector.reflectIntArray([], "et")
         reflector.reflectArray(0, "ed")
-        // reflectNextReflectablePointer
-        // todo
-        reflector.reflectExitObject()*/
+        reflector.reflectIntArray([], "ev")
+        reflector.reflectExitObject()
 
         //sub_927EB4
         /*reflector.reflectObject("ttphelp")
@@ -292,14 +321,14 @@ class OwnHomeDataMessage extends PiranhaMessage {
 
         // LogicJsonOutReflector::fixReferences
 
-        reflector.reflectInt(1, "boat_energy", 0)
-        reflector.reflectInt(1, "boat_energy_reg", 0)
-        reflector.reflectInt(1, "chall_energy", 0)
-        reflector.reflectInt(1, "chall_energy_reg", 0)
-        reflector.reflectInt(1, "constr_energy", 0)
-        reflector.reflectInt(1, "constr_energy_reg", 0)
-        reflector.reflectInt(1, "move_energy", 0)
-        reflector.reflectInt(1, "move_energy_reg", 0)
+        reflector.reflectInt(3, "boat_energy", 3)
+        reflector.reflectInt(0, "boat_energy_reg", 0)
+        reflector.reflectInt(3, "chall_energy", 3)
+        reflector.reflectInt(0, "chall_energy_reg", 0)
+        reflector.reflectInt(3, "constr_energy", 3)
+        reflector.reflectInt(0, "constr_energy_reg", 0)
+        reflector.reflectInt(0, "move_energy", 0)
+        reflector.reflectInt(0, "move_energy_reg", 0)
         reflector.reflectArray(0, "known")
         // ^ if 0 goto LABEL_51
 
@@ -363,9 +392,9 @@ class OwnHomeDataMessage extends PiranhaMessage {
 
         // sub_69FF44
 
-        reflector.reflectInt(0, "ntf_chat_pref", 0)
-        reflector.reflectBool(0, "ntf_valley", 0)
-        reflector.reflectBool(0, "ntf_village", 0)
+        reflector.reflectInt(1, "ntf_chat_pref", 1)
+        reflector.reflectBool(1, "ntf_valley", 1)
+        reflector.reflectBool(1, "ntf_village", 1)
 
         // TODO: sub_3D11B0
         // Array (a1 + 696) + 12
@@ -374,8 +403,11 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectInt(0, "valley_tasks", 0)
 
         // TODO: sub_BB2548
+        reflector.reflectArray(0, "animals")
         // TODO: sub_B17594
+        reflector.reflectArray(0, "ures")
         // TODO: sub_B17594
+        reflector.reflectArray(0, "purchd_prod_bldns")
 
         /*reflector.reflectObject("eventManager")
         // sub_5700FC
@@ -399,7 +431,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
     }
     async reflectBuilding(reflector, data) {
         reflector.reflectNextObject()
-        reflector.reflectInt(data.id, "id", null) // todo: can be 0?
+        reflector.reflectInt(data.id, "id", -1) // todo: can be 0?
         reflector.reflectInt(data.data, "data", 0) // pointer base - good enough for now
         reflector.reflectInt(data.lvl, "lvl", 0)
         reflector.reflectInt(data.x, "x", 0)
@@ -422,15 +454,15 @@ class OwnHomeDataMessage extends PiranhaMessage {
 
     async reflectObstacle(reflector, data) {
         reflector.reflectNextObject()
-        reflector.reflectInt(data.id, "id", null)
+        reflector.reflectInt(data.id, "id", -1)
         reflector.reflectInt(data.data, "data", 0)
         reflector.reflectInt(data.lvl, "lvl", 0)
         reflector.reflectInt(data.x, "x", 0)
         reflector.reflectInt(data.y, "y", 0)
         reflector.reflectInt(data.lx, "lx", 0)
         reflector.reflectInt(data.ly, "ly", 0)
-        reflector.reflectLong(data.clear_t.high, data.clear_t.low, "clear_t", 0, 0)
-        reflector.reflectLong(data.timer_g.high, data.timer_g.low, "timer_g", 0, 0)
+        reflector.reflectLong(data.clear_t.high, data.clear_t.low, "clear_t", -1, -2)
+        reflector.reflectLong(data.timer_g.high, data.timer_g.low, "timer_g", -1, -2)
         reflector.reflectInt(data.grow_t, "grow_t", 0)
         reflector.reflectBool(data.harv_p, "harv_p")
         reflector.reflectInt(data.harv, "harv", 0)
@@ -442,7 +474,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
 
     async reflectWorker(reflector, data) {
         reflector.reflectNextObject()
-        reflector.reflectInt(data.id, "id", null)
+        reflector.reflectInt(data.id, "id", -1)
         reflector.reflectInt(data.data, "data", 0)
         reflector.reflectInt(0, "lvl", 0)
         reflector.reflectInt(0, "x", 0)
@@ -457,7 +489,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
         // pointer base prof_a
         reflector.reflectLong(data.join.high, data.join.low, "join", 0, 0)
         reflector.reflectInt(data.hunger, "hunger", 0)
-        reflector.reflectInt(data.hunger_max, "hunger_max", 0)
+        reflector.reflectInt(data.hunger_max, "hunger_max", 10000)
         reflector.reflectInt(data.eat, "eat", 0)
         reflector.reflectInt(data.sleep_t, "sleep_t", 0)
         reflector.reflectBool(data.at_sleep, "at_sleep")
