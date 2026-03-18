@@ -23,6 +23,16 @@ class MessagesHandler {
         const MessageHandler = LogicLaserMessageFactory.createMessageByType(id)
 
         if (!MessageHandler) {
+            let name;
+            switch (id) {
+                case 10099: name = "ClientCryptoErrorMessage"; break
+                case 10110: name = "AnalyticEventMessage"; break
+            }
+            if (name) {
+                this.session.console.log("Passed", name, "packet")
+                return
+            }
+            
             this.session.warn(`Gotcha unhandled ${id} packet!`)
             let dump = ""
             bytes.forEach(e => {
