@@ -51,7 +51,7 @@ class Patcher {
 
     cacheFiles () {
         const dirName = __dirname.replace("\\Patcher", "")
-        getDirectories(path.join(dirName, "GameAssets"), (err, res) => {
+        getDirectories(path.join(dirName, "csv"), (err, res) => {
             if (err) return console.log(err)
             
             for (const file of res) {
@@ -59,7 +59,7 @@ class Patcher {
 
                 const data = fs.readFileSync(file)
                 const hash = sha1(data)
-                const filePath = path.relative(dirName, file).replace("GameAssets\\", "").replaceAll("\\", "/")
+                const filePath = path.relative(dirName, file).replace("csv\\", "").replaceAll("\\", "/")
 
                 this.files[filePath] = data.toString()
 

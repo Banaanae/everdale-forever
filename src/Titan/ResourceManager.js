@@ -29,7 +29,7 @@ class ResourceManager {
 
     static loadResourceContent (file) {
         try {
-            const content = fs.readFileSync(path.join(__dirname.replace("/Titan", ""), "GameAssets", file))
+            const content = fs.readFileSync(path.join(__dirname.replace(/.Titan$/, ""), "csv", file))
 
             return content.toString()
         } catch (e) {
