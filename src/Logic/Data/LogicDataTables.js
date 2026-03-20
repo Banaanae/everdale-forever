@@ -4,7 +4,7 @@ const LogicDataTable = require('./LogicDataTable')
 const LogicDataType = LogicData.LogicDataType
 
 class LogicDataTables {
-    static TABLE_COUNT = 52
+    static TABLE_COUNT = 3
 
     static tables = []
 

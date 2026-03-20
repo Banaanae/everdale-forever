@@ -19,7 +19,7 @@ class GlobalID {
             ClassID = ClassID[0]
         }
 
-        return ClassID * 1000000 + InstanceID
+        return ClassID * 100000 + InstanceID
     }
 
     /**
@@ -30,7 +30,7 @@ class GlobalID {
      *   GlobalID.getClassID(1000002) // 1
      */
     static getClassID (GlobalID) {
-        return Math.floor(GlobalID / 1000000)
+        return Math.floor(GlobalID / 100000)
     }
 
     /**
@@ -41,7 +41,7 @@ class GlobalID {
      *   GlobalID.getInstanceID(1000002) // 2
      */
     static getInstanceID (GlobalID) {
-        return GlobalID % 1000000
+        return GlobalID % 100000
     }
 
     /**

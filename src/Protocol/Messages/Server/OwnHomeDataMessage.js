@@ -67,7 +67,6 @@ class OwnHomeDataMessage extends PiranhaMessage {
             //const compressed = new LogicCompressedString(JSON.stringify((await this.reflect(null)).jsonData))
             //compressed.encode(this.stream) // a1 + 64
             this.stream.writeString(JSON.stringify((await this.reflect(null)).jsonData))
-            //this.stream.writeString('{"version":1,"missionhash":[],"townhall":1,"rfaid":1,"jivlst":[],"tclst":[],"rfprzcmdlst":[],"buildingsNextId":0,"buildings":[{"id": 0,"data":100000}],"obstacles":[0,1,2],"workersNextId":1,"workers":[6],"itemsNextId":1,"challengesNextId":1,"boatsNextId":1,"cartsNextId":1,"jobsNextId":1,"sitesNextId":1,"boost_pause":false,"challenge_seen":[],"challenge_page_seen":[],"mapRandom":2,"workerRandom":7,"lvlRandom":8,"help_opened":false,"map_visited":false,"time_estimation_seen":false,"photo_mode_seen":false,"boat_energy":1,"boat_energy_reg":1,"chall_energy":1,"chall_energy_reg":1,"constr_energy":1,"constr_energy_reg":1,"move_energy":1,"move_energy_reg":1,"ftue_events":[],"ch_hash":1}')
         }
 
         this.stream.writeLongLong(0, 1)
@@ -164,18 +163,42 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectArray(0, "tcivnmlst")
         reflector.reflectIntArray([], "rfprzcmdlst") // LongArray
 
-        reflector.reflectInt(5, "buildingsNextId", 0)
-        reflector.reflectArray(5, "buildings")
-        await this.reflectBuilding(reflector, {id: 0, data: 100000, lvl: 0, x: 33, y: 33, lx: 4, ly: 4, c: 0, t: 0, queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false})
-        await this.reflectBuilding(reflector, {id: 1, data: 100012, lvl: 0, x: 39, y: 39, lx: 2, ly: 2, c: 0, t: 0, queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false})
-        await this.reflectBuilding(reflector, {id: 2, data: 100024, lvl: 0, x: 38, y: 29, lx: 2, ly: 2, c: 0, t: 0, queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false})
-        await this.reflectBuilding(reflector, {id: 3, data: 100034, lvl: 0, x: 38, y: 33, lx: 4, ly: 4, c: 0, t: 0, queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false})
-        await this.reflectBuilding(reflector, {id: 4, data: 100159, lvl: 0, x: 64, y: 36, lx: 2, ly: 2, c: 0, t: 0, queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false})
+        reflector.reflectInt(18, "buildingsNextId", 0)
+        reflector.reflectArray(18, "buildings")
+        
+        await this.reflectBuilding(reflector, {id: 0, data: 100000, lvl: 0, x: 33, y: 33, lx: 4, ly: 4, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 1, data: 100014, lvl: 0, x: 40, y: 23, lx: 3, ly: 3, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
+        await this.reflectBuilding(reflector, {id: 2, data: 100002, lvl: 0, x: 38, y: 29, lx: 2, ly: 2, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 3, data: 100001, lvl: 0, x: 39, y: 39, lx: 2, ly: 2, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 4, data: 100003, lvl: 0, x: 38, y: 33, lx: 4, ly: 4, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false, spawn_progress: [1, 1, 1, 1]}, null)
+        await this.reflectBuilding(reflector, {id: 5, data: 100015, lvl: 0, x: 52, y: 38, lx: 2, ly: 2, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 6, data: 100041, lvl: 0, x: 58, y: 39, lx: 2, ly: 2, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 7, data: 100042, lvl: 0, x: 53, y: 32, lx: 4, ly: 3, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 8, data: 100071, lvl: 0, x: 49, y: 32, lx: 4, ly: 3, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 9, data: 100052, lvl: 0, x: 64, y: 36, lx: 2, ly: 2, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 10, data: 100044, lvl: 0, x: 59, y: 32, lx: 2, ly: 2, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 11, data: 100010, lvl: 0, x: 41, y: 48, lx: 4, ly: 4, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
+        await this.reflectBuilding(reflector, {id: 12, data: 100007, lvl: 0, x: 50, y: 15, lx: 4, ly: 4, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
+        await this.reflectBuilding(reflector, {id: 13, data: 100007, lvl: 0, x: 12, y: 54, lx: 4, ly: 4, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
+        await this.reflectBuilding(reflector, {id: 14, data: 100010, lvl: 0, x: 17, y: 16, lx: 4, ly: 4, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
+        await this.reflectBuilding(reflector, {id: 15, data: 100028, lvl: 0, x: 27, y: 54, lx: 5, ly: 5, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, spawn_progress: []}, null)
+        await this.reflectBuilding(reflector, {id: 16, data: 100028, lvl: 0, x: 12, y: 33, lx: 5, ly: 5, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, spawn_progress: []}, null)
+        await this.reflectBuilding(reflector, {id: 17, data: 100028, lvl: 0, x: 36, y: 10, lx: 5, ly: 5, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, spawn_progress: []}, null)
         reflector.reflectExitArray()
 
-        reflector.reflectInt(1, "obstaclesNextId", 0)
-        reflector.reflectArray(1, "obstacles")
-        await this.reflectObstacle(reflector, {id: 0, data: 500051, lvl: 0, x: 0, y: 0, lx: 5, ly: 5, clear_t: {high: 0, low: 0}, timer_g: {high: 0, low: 0}, grow_t: 100, harv_p: false, harv: 0, fade: 0, harv_l: [], qid: -1})
+        reflector.reflectInt(11, "obstaclesNextId", 0)
+        reflector.reflectArray(11, "obstacles")
+        await this.reflectObstacle(reflector, {id: 0, data: 500050, lvl: 0, x: 55, y: 36, lx: 12, ly: 4, clear_t: {high: 0, low: 0}, timer_g: {high: 0, low: 0}, grow_t: 0, harv_p: false, harv: 0, fade: 0, harv_l: [], qid: -1})
+        await this.reflectObstacle(reflector, {id: 1, data: 500049, lvl: 0, x: 48, y: 27, lx: 1, ly: 1, clear_t: {high: 0, low: 0}, timer_g: {high: 0, low: 0}, grow_t: 0, harv_p: false, harv: 0, fade: 0, harv_l: [], qid: -1})
+        await this.reflectObstacle(reflector, {id: 2, data: 500049, lvl: 0, x: 46, y: 26, lx: 1, ly: 1, clear_t: {high: 0, low: 0}, timer_g: {high: 0, low: 0}, grow_t: 0, harv_p: false, harv: 0, fade: 0, harv_l: [], qid: -1})
+        await this.reflectObstacle(reflector, {id: 3, data: 500049, lvl: 0, x: 47, y: 26, lx: 1, ly: 1, clear_t: {high: 0, low: 0}, timer_g: {high: 0, low: 0}, grow_t: 0, harv_p: false, harv: 0, fade: 0, harv_l: [], qid: -1})
+        await this.reflectObstacle(reflector, {id: 4, data: 500049, lvl: 0, x: 47, y: 39, lx: 1, ly: 1, clear_t: {high: 0, low: 0}, timer_g: {high: 0, low: 0}, grow_t: 0, harv_p: false, harv: 0, fade: 0, harv_l: [], qid: -1})
+        await this.reflectObstacle(reflector, {id: 5, data: 500049, lvl: 0, x: 46, y: 42, lx: 1, ly: 1, clear_t: {high: 0, low: 0}, timer_g: {high: 0, low: 0}, grow_t: 0, harv_p: false, harv: 0, fade: 0, harv_l: [], qid: -1})
+        await this.reflectObstacle(reflector, {id: 6, data: 500049, lvl: 0, x: 46, y: 40, lx: 1, ly: 1, clear_t: {high: 0, low: 0}, timer_g: {high: 0, low: 0}, grow_t: 0, harv_p: false, harv: 0, fade: 0, harv_l: [], qid: -1})
+        await this.reflectObstacle(reflector, {id: 7, data: 500047, lvl: 0, x: 45, y: 38, lx: 2, ly: 2, clear_t: {high: 0, low: 0}, timer_g: {high: 0, low: 0}, grow_t: 0, harv_p: false, harv: 0, fade: 0, harv_l: [], qid: -1})
+        await this.reflectObstacle(reflector, {id: 8, data: 500047, lvl: 0, x: 47, y: 41, lx: 2, ly: 2, clear_t: {high: 0, low: 0}, timer_g: {high: 0, low: 0}, grow_t: 0, harv_p: false, harv: 0, fade: 0, harv_l: [], qid: -1})
+        await this.reflectObstacle(reflector, {id: 9, data: 500059, lvl: 0, x: 41, y: 44, lx: 2, ly: 2, clear_t: {high: 0, low: 0}, timer_g: {high: 0, low: 0}, grow_t: 0, harv_p: false, harv: 0, fade: 0, harv_l: [], qid: -1})
+        await this.reflectObstacle(reflector, {id: 10, data: 500059, lvl: 0, x: 44, y: 43, lx: 2, ly: 2, clear_t: {high: 0, low: 0}, timer_g: {high: 0, low: 0}, grow_t: 0, harv_p: false, harv: 0, fade: 0, harv_l: [], qid: -1})
         reflector.reflectExitArray()
 
         reflector.reflectInt(1, "workersNextId", 0)
@@ -228,6 +251,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectArray(0, "events")
 
         // wnotes 1004
+        // worker notes?
         reflector.reflectArray(0, "wnotes")/*
         reflector.reflectNextObject()
         reflector.reflectLong(0, 1, "home", 0, 0)
@@ -268,8 +292,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectBool(false, "photo_mode_seen")
 
         // sub_4BCCB0
-        /*
-        reflector.reflectObject("questMan")
+        /*reflector.reflectObject("questMan")
         reflector.reflectArray(0, "qarr")
         reflector.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "random")
         reflector.reflectInt(1, "qid", 1)
@@ -284,7 +307,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectInt(0, "ci", 0)
         reflector.reflectInt(0, "t ", 0)
         reflector.reflectBool(false, "l", false)
-        reflector.reflectReflectablePointerBase(100000, "p", -1)
+        //reflector.reflectReflectablePointerBase(100000, "p", -1)
         reflector.reflectInt(0, "ntt", 0)
         reflector.reflectExitObject()*/
 
@@ -308,8 +331,8 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectObject("missionManager")
         reflector.reflectString("", "mn", "")
         reflector.reflectInt(0, "s", 0)
-        reflector.reflectInt(0, "r", 0)
-        reflector.reflectIntArray([], "et")
+        reflector.reflectBool(false, "r", false)
+        reflector.reflectIntArray([0, 1, 2, 3, 4], "et")
         reflector.reflectArray(0, "ed")
         reflector.reflectIntArray([], "ev")
         reflector.reflectExitObject()
@@ -337,7 +360,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
             // sub_3A6DFC
             reflector.reflectObject("nation")
             reflector.reflectLong(0, 0, "ff_lock", 0, 0)
-            reflector.reflectInt(1, "version", 0)
+            reflector.reflectInt(11, "version", 0)
             reflector.reflectObject("time")
             // sub_82D054
             const tick = Math.floor(Date.now() / 1000)
@@ -345,7 +368,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
             reflector.reflectExitObject()
             reflector.reflectLong(0, 0, "offset_time", 0, 0)
             // sub_868744
-            reflector.reflectLong(0, 0, "id", 0, 0)
+            reflector.reflectLong(1, 1, "id", 0, 0)
             reflector.reflectLong(0, 0, "createdTime", 0, 0)
             reflector.reflectInt(0, "badgeInfo", 0)
             reflector.reflectInt(0, "expLevel", 0)
@@ -353,15 +376,18 @@ class OwnHomeDataMessage extends PiranhaMessage {
             reflector.reflectInt(0, "challengeScore", 0)
             reflector.reflectString("nation name", "name", "")
             reflector.reflectInt(1, "memberCount", 0)
-            reflector.reflectInt(6, "maxMemberCount", 0)
+            reflector.reflectInt(10, "maxMemberCount", 0)
+            reflector.reflectInt(0, "castleLevel", 0)
+            reflector.reflectInt(0, "monumentLevel", 0)
             reflector.reflectInt(0, 0, "lastMemberJoinedTick", 0, 0)
             reflector.reflectInt(1, "preferredLanguageId", 0)
             reflector.reflectString("description lol", "desc", "")
             reflector.reflectInt(1, "minLevel", 0)
             reflector.reflectInt(1, "minRep", 0)
+            reflector.reflectInt(1, "type", 0)
             reflector.reflectInt(1, "createType", 0)
             reflector.reflectInt(1, "accessType", 0)
-            reflector.reflectInt(1, "matchType", 0)
+            reflector.reflectInt(1, "matchType", 1)
             reflector.reflectString("English", "chatLocale")
             reflector.reflectArray(0, "tags")
             // ^ if 0 return
@@ -373,21 +399,30 @@ class OwnHomeDataMessage extends PiranhaMessage {
             // votes 1200
             reflector.reflectArray(0, "perks")
             // ^ if 0 goto LABEL_34
-            reflector.reflectInt(0, "perks_end", 0)
-            reflector.reflectArray(0, "perks_end") // LogicLongArray
+            //reflector.reflectInt(0, "perks_end", 0)
+            //reflector.reflectArray(0, "perks_end") // LogicLongArray
+            // object techTree
             reflector.reflectInt(0, "request_id", 0)
             // request 1007
-            reflector.reflectObject("objects")
+            //reflector.reflectObject("objects")
             // TODO
-            reflector.reflectExitObject()
+            //reflector.reflectExitObject()
             // Dynamic reflectNextReflectable (a1 + 31) + 24
             // log 1010
-            reflector.reflectInt(0, "n_log", 0)
+            reflector.reflectInt(0, "nlog", 0)
             reflector.reflectInt(0, "colorIndex", 0)
             // trel 1001
             reflector.reflectExitObject()
         }
-        reflector.reflectArray(0, "ntfs")
+        reflector.reflectArray(1, "ntfs")
+        reflector.reflectNextObject()
+        reflector.reflectInt(0, "gid", 0)
+        reflector.reflectBool(0, "e", 0)
+        reflector.reflectInt(0, "ev", 0)
+        reflector.reflectLong(0, "tck", 0)
+        reflector.reflectLong(0, "nid", 0)
+        reflector.reflectExitObject()
+        reflector.reflectExitArray()
         // ^ if 0 goto LABEL_106
 
         // sub_69FF44
@@ -399,29 +434,39 @@ class OwnHomeDataMessage extends PiranhaMessage {
         // TODO: sub_3D11B0
         // Array (a1 + 696) + 12
 
-        reflector.reflectIntArray([], "ftue_events")
+        reflector.reflectIntArray([0], "ftue_events")
         reflector.reflectInt(0, "valley_tasks", 0)
 
         // TODO: sub_BB2548
-        reflector.reflectArray(0, "animals")
+        reflector.reflectArray(0, "animals")/*
+        reflector.reflectNextObject()
+        reflector.reflectInt(34, "data", 34)
+        reflector.reflectInt(0, "home_id", 0)
+        reflector.reflectInt(0, "animal_id", 0)
+        reflector.reflectInt("", "name", "")
+        reflector.reflectExitObject()
+        reflector.reflectExitArray()*/
         // TODO: sub_B17594
         reflector.reflectArray(0, "ures")
+        // int d -1
+        // long c 0
         // TODO: sub_B17594
         reflector.reflectArray(0, "purchd_prod_bldns")
 
-        /*reflector.reflectObject("eventManager")
+        reflector.reflectObject("eventManager")
         // sub_5700FC
-        // squad doesnt require below so hopefully we are good too
-        // upcoming -1
-        // active -1
-        // activeTransientEvents -1
+        reflector.reflectArray(0, "upcoming")
+        reflector.reflectArray(0, "active")
+        reflector.reflectArray(0, "activeTransientEvents")
         reflector.reflectInt(0, "pendingChronosOfferId", 0)
         reflector.reflectObject("purchaseCounts")
+        reflector.reflectIntArray([], "ids")
+        reflector.reflectIntArray([], "values")
         reflector.reflectExitObject()
         reflector.reflectObject("seenActiveEventIds")
         reflector.reflectExitObject()
         reflector.reflectExitObject()
-        reflector.reflectObject("history")
+        /* reflector.reflectObject("history")
         // past_members
         reflector.reflectExitObject()*/
         reflector.reflectInt(0, "known_pc", 0)
@@ -429,19 +474,41 @@ class OwnHomeDataMessage extends PiranhaMessage {
 
         return reflector
     }
-    async reflectBuilding(reflector, data) {
+    async reflectBuilding(reflector, data, stored) {
         reflector.reflectNextObject()
-        reflector.reflectInt(data.id, "id", -1) // todo: can be 0?
+        reflector.reflectInt(data.id, "id", -1)
         reflector.reflectInt(data.data, "data", 0) // pointer base - good enough for now
         reflector.reflectInt(data.lvl, "lvl", 0)
         reflector.reflectInt(data.x, "x", 0)
         reflector.reflectInt(data.y, "y", 0)
         reflector.reflectInt(data.lx, "lx", 0)
         reflector.reflectInt(data.ly, "ly", 0)
-        reflector.reflectArray(data.t, "t") // tools?
-        reflector.reflectArray(data.c, "c") // carts?
+        if (data.data === 100003 || data.data === 100028) {
+            reflector.reflectIntArray(data.spawn_progress, "spawn_progress")
+        } else if (data.data === 100014 || data.data === 100007 || data.data === 10010) {
+            reflector.reflectLong(data.prod_ms.high, data.prod_ms.low, "prod_ms", 0, 0)
+            reflector.reflectInt(0, "auto_n", 0)
+            reflector.reflectInt(0, "m_numBatchesProduced", 0)
+            reflector.reflectInt(0, "m_maxBatchesProducable", 0)
+        } else if (data.data === 100002) {
+            reflector.reflectIntArray([0], "workers")
+            reflector.reflectIntArray([], "new_workers")
+        } else if (data.data === 100015) {
+            // optional object in
+            /*reflector.reflectObject("TaskP")
+            reflector.reflectExitObject()*/
+        } else if (data.data === 100000 || data.data === 100001) {
+            reflector.reflectArray(data.t, "t") // tools?
+            reflector.reflectIntArray(data.c, "c") // carts?
+        }
         reflector.reflectIntArray(data.queue, "queue")
-        // optional object
+        if (stored !== null) {
+            reflector.reflectBool(false, "auto")
+            reflector.reflectBool(true, "man")
+            reflector.reflectArray(0, "t")
+            reflector.reflectIntArray([], "c")
+            reflector.reflectIntArray([], "n")
+        }
         reflector.reflectIntArray(data.m_workers, "m_workers")
         reflector.reflectInt(data.state, "state", 0)
         reflector.reflectIntArray(data.sites, "sites")
