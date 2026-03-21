@@ -166,24 +166,24 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectInt(18, "buildingsNextId", 0)
         reflector.reflectArray(18, "buildings")
         
-        await this.reflectBuilding(reflector, {id: 0, data: 100000, lvl: 0, x: 33, y: 33, lx: 4, ly: 4, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
-        await this.reflectBuilding(reflector, {id: 1, data: 100014, lvl: 0, x: 40, y: 23, lx: 3, ly: 3, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
-        await this.reflectBuilding(reflector, {id: 2, data: 100002, lvl: 0, x: 38, y: 29, lx: 2, ly: 2, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
-        await this.reflectBuilding(reflector, {id: 3, data: 100001, lvl: 0, x: 39, y: 39, lx: 2, ly: 2, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
-        await this.reflectBuilding(reflector, {id: 4, data: 100003, lvl: 0, x: 38, y: 33, lx: 4, ly: 4, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false, spawn_progress: [1, 1, 1, 1]}, null)
-        await this.reflectBuilding(reflector, {id: 5, data: 100015, lvl: 0, x: 52, y: 38, lx: 2, ly: 2, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
-        await this.reflectBuilding(reflector, {id: 6, data: 100041, lvl: 0, x: 58, y: 39, lx: 2, ly: 2, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
-        await this.reflectBuilding(reflector, {id: 7, data: 100042, lvl: 0, x: 53, y: 32, lx: 4, ly: 3, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
-        await this.reflectBuilding(reflector, {id: 8, data: 100071, lvl: 0, x: 49, y: 32, lx: 4, ly: 3, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
-        await this.reflectBuilding(reflector, {id: 9, data: 100052, lvl: 0, x: 64, y: 36, lx: 2, ly: 2, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
-        await this.reflectBuilding(reflector, {id: 10, data: 100044, lvl: 0, x: 59, y: 32, lx: 2, ly: 2, t: 0, c: [], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
-        await this.reflectBuilding(reflector, {id: 11, data: 100010, lvl: 0, x: 41, y: 48, lx: 4, ly: 4, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
-        await this.reflectBuilding(reflector, {id: 12, data: 100007, lvl: 0, x: 50, y: 15, lx: 4, ly: 4, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
-        await this.reflectBuilding(reflector, {id: 13, data: 100007, lvl: 0, x: 12, y: 54, lx: 4, ly: 4, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
-        await this.reflectBuilding(reflector, {id: 14, data: 100010, lvl: 0, x: 17, y: 16, lx: 4, ly: 4, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
-        await this.reflectBuilding(reflector, {id: 15, data: 100028, lvl: 0, x: 27, y: 54, lx: 5, ly: 5, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, spawn_progress: []}, null)
-        await this.reflectBuilding(reflector, {id: 16, data: 100028, lvl: 0, x: 12, y: 33, lx: 5, ly: 5, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, spawn_progress: []}, null)
-        await this.reflectBuilding(reflector, {id: 17, data: 100028, lvl: 0, x: 36, y: 10, lx: 5, ly: 5, t: 0, c: [], queue: [], m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, spawn_progress: []}, null)
+        await this.reflectBuilding(reflector, {id: 0, data: 100000, lvl: 0, x: 33, y: 33, lx: 4, ly: 4, t: [300000, 300020], c: [5, 250], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 1, data: 100014, lvl: 0, x: 40, y: 23, lx: 3, ly: 3, m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
+        await this.reflectBuilding(reflector, {id: 2, data: 100002, lvl: 0, x: 38, y: 29, lx: 2, ly: 2, m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 3, data: 100001, lvl: 0, x: 39, y: 39, lx: 2, ly: 2, t: [300003], c: [2], queue: [], m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 4, data: 100003, lvl: 0, x: 38, y: 33, lx: 4, ly: 4, m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false, spawn_progress: [1, 1, 1, 1]}, null)
+        await this.reflectBuilding(reflector, {id: 5, data: 100015, lvl: 0, x: 52, y: 38, lx: 2, ly: 2, m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 6, data: 100041, lvl: 0, x: 58, y: 39, lx: 2, ly: 2, m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 7, data: 100042, lvl: 0, x: 53, y: 32, lx: 4, ly: 3, m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 8, data: 100071, lvl: 0, x: 49, y: 32, lx: 4, ly: 3, m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 9, data: 100052, lvl: 0, x: 64, y: 36, lx: 2, ly: 2, m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 10, data: 100044, lvl: 0, x: 59, y: 32, lx: 2, ly: 2, m_workers: [], state: 0, sites: [], orientation: 0, roofc: 0, stored: false}, null)
+        await this.reflectBuilding(reflector, {id: 11, data: 100010, lvl: 0, x: 41, y: 48, lx: 4, ly: 4, m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
+        await this.reflectBuilding(reflector, {id: 12, data: 100007, lvl: 0, x: 50, y: 15, lx: 4, ly: 4, m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
+        await this.reflectBuilding(reflector, {id: 13, data: 100007, lvl: 0, x: 12, y: 54, lx: 4, ly: 4, m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
+        await this.reflectBuilding(reflector, {id: 14, data: 100010, lvl: 0, x: 17, y: 16, lx: 4, ly: 4, m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, prod_ms: {high: 0, low: 14400000}}, null)
+        await this.reflectBuilding(reflector, {id: 15, data: 100028, lvl: 0, x: 27, y: 54, lx: 5, ly: 5, m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, spawn_progress: []}, null)
+        await this.reflectBuilding(reflector, {id: 16, data: 100028, lvl: 0, x: 12, y: 33, lx: 5, ly: 5, m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, spawn_progress: []}, null)
+        await this.reflectBuilding(reflector, {id: 17, data: 100028, lvl: 0, x: 36, y: 10, lx: 5, ly: 5, m_workers: [], state: 1, sites: [], orientation: 0, roofc: 0, stored: false, spawn_progress: []}, null)
         reflector.reflectExitArray()
 
         reflector.reflectInt(11, "obstaclesNextId", 0)
@@ -220,8 +220,13 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectInt(0, "boatsNextId", 0)
         reflector.reflectArray(0, "boats")
 
-        reflector.reflectInt(0, "cartsNextId", 0)
-        reflector.reflectArray(0, "carts")
+        reflector.reflectInt(4, "cartsNextId", 0)
+        reflector.reflectArray(4, "carts")
+        await this.reflectCart(reflector, {id: 0, data: 600000})
+        await this.reflectCart(reflector, {id: 1, data: 600001})
+        await this.reflectCart(reflector, {id: 2, data: 600002})
+        await this.reflectCart(reflector, {id: 3, data: 600003})
+        reflector.reflectExitArray()
 
         reflector.reflectRandom(new LogicRandom(1 + Math.floor(Math.random() * 10)), "goRandom")
 
@@ -488,8 +493,8 @@ class OwnHomeDataMessage extends PiranhaMessage {
         } else if (data.data === 100014 || data.data === 100007 || data.data === 10010) {
             reflector.reflectLong(data.prod_ms.high, data.prod_ms.low, "prod_ms", 0, 0)
             reflector.reflectInt(0, "auto_n", 0)
-            reflector.reflectInt(0, "m_numBatchesProduced", 0)
-            reflector.reflectInt(0, "m_maxBatchesProducable", 0)
+            reflector.reflectInt(1, "m_numBatchesProduced", 0)
+            reflector.reflectInt(1, "m_maxBatchesProducable", 0)
         } else if (data.data === 100002) {
             reflector.reflectIntArray([0], "workers")
             reflector.reflectIntArray([], "new_workers")
@@ -498,10 +503,12 @@ class OwnHomeDataMessage extends PiranhaMessage {
             /*reflector.reflectObject("TaskP")
             reflector.reflectExitObject()*/
         } else if (data.data === 100000 || data.data === 100001) {
-            reflector.reflectArray(data.t, "t") // tools?
-            reflector.reflectIntArray(data.c, "c") // carts?
+            reflector.reflectArray(data.t.length, "t") // item id
+            reflector.reflectNextInt(data.t)
+            reflector.reflectExitArray()
+            reflector.reflectIntArray(data.c, "c") // count
+            reflector.reflectIntArray(data.queue, "queue")
         }
-        reflector.reflectIntArray(data.queue, "queue")
         if (stored !== null) {
             reflector.reflectBool(false, "auto")
             reflector.reflectBool(true, "man")
@@ -553,6 +560,8 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectInt(data.xp, "xp", 0)
         reflector.reflectBool(data.lvl_claim, "lvl_claim")
         // pointer base prof
+        reflector.reflectInt(3200000, "prof", 32)
+        reflector.reflectInt(3200000, "prof_a", 32)
         // pointer base prof_a
         reflector.reflectLong(data.join.high, data.join.low, "join", 0, 0)
         reflector.reflectInt(data.hunger, "hunger", 0)
@@ -588,6 +597,29 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectInt(data.hire, "hire", 0)
         reflector.reflectInt(data.hires, "hires", 0)
         // +344LL hangout
+        reflector.reflectExitObject()
+    }
+
+    async reflectCart(reflector, data) {
+        reflector.reflectNextObject()
+        reflector.reflectInt(data.id, "id", -1)
+        reflector.reflectInt(data.data, "data", 0)
+        reflector.reflectInt(0, "lvl", 0)
+        reflector.reflectInt(0, "x", 0)
+        reflector.reflectInt(0, "y", 0)
+        reflector.reflectInt(0, "lx", 0)
+        reflector.reflectInt(0, "ly", 0)
+        // reflector.reflectOptionalObject("resu")
+        // pointer base rr 3
+        reflector.reflectInt(0, "ra", 0)
+        reflector.reflectInt(0, "objId", 0)
+        reflector.reflectInt(0, "taskId", 0)
+        reflector.reflectLong(0, 0, "exp", 0, 0)
+        reflector.reflectBool(false, "doesexp", false)
+        reflector.reflectBool(false, "viltask", false)
+        reflector.reflectBool(true, "can", true)
+        reflector.reflectLong(0, 0, "m_createTick", 0, 0)
+        reflector.reflectLong(0, 0, "m_completeTick", 0, 0)
         reflector.reflectExitObject()
     }
 }
