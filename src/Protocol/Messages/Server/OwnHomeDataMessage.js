@@ -53,20 +53,14 @@ class OwnHomeDataMessage extends PiranhaMessage {
         this.stream.writeInt(0)
         this.stream.writeInt(0)
 
-        // v5 = (a1 + 80)
-        // v5 > 0
-        const isRaw = false
-        this.stream.writeBoolean(isRaw)
-        if (isRaw) {
-            //this.stream.writeBytes(Buffer.from([])) // a1 + 80
-            let reflector = new ByteStream()
-            await this.reflect(reflector)
-            let comp = zlib.deflateSync(reflector.buffer)
-            this.stream.writeBytes(reflector.buffer)
+        const isCompressed = false
+        this.stream.writeBoolean(isCompressed)
+        if (isCompressed) {
+            // TODO
+            const compressed = zlib.deflateSync(JSON.stringify((await this.reflect()).jsonData))
+            this.stream.writeBytes(compressed)
         } else {
-            //const compressed = new LogicCompressedString(JSON.stringify((await this.reflect(null)).jsonData))
-            //compressed.encode(this.stream) // a1 + 64
-            this.stream.writeString(JSON.stringify((await this.reflect(null)).jsonData))
+            this.stream.writeString(JSON.stringify((await this.reflect()).jsonData))
         }
 
         this.stream.writeLongLong(0, 1)
@@ -99,13 +93,8 @@ class OwnHomeDataMessage extends PiranhaMessage {
         console.log(dump)
     }
 
-    async reflect(stream) {
-        let reflector;
-        if (stream === null) {
-            reflector = new LogicJSONOutReflector({});
-        } else {
-            reflector = new LogicRawOutReflector(stream)
-        }
+    async reflect() {
+        let reflector = new LogicJSONOutReflector({});
 
         reflector.reflectInt(11, "version", 0)
         reflector.reflectInt(0, "debug_a", 0)
@@ -469,6 +458,8 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectIntArray([], "values")
         reflector.reflectExitObject()
         reflector.reflectObject("seenActiveEventIds")
+        reflector.reflectIntArray([], "ids")
+        reflector.reflectIntArray([], "values")
         reflector.reflectExitObject()
         reflector.reflectExitObject()
         /* reflector.reflectObject("history")
@@ -490,7 +481,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectInt(data.ly, "ly", 0)
         if (data.data === 100003 || data.data === 100028) {
             reflector.reflectIntArray(data.spawn_progress, "spawn_progress")
-        } else if (data.data === 100014 || data.data === 100007 || data.data === 10010) {
+        } else if (data.data === 100014 || data.data === 100007 || data.data === 100010) {
             reflector.reflectLong(data.prod_ms.high, data.prod_ms.low, "prod_ms", 0, 0)
             reflector.reflectInt(0, "auto_n", 0)
             reflector.reflectInt(1, "m_numBatchesProduced", 0)
@@ -503,9 +494,10 @@ class OwnHomeDataMessage extends PiranhaMessage {
             /*reflector.reflectObject("TaskP")
             reflector.reflectExitObject()*/
         } else if (data.data === 100000 || data.data === 100001) {
-            reflector.reflectArray(data.t.length, "t") // item id
-            reflector.reflectNextInt(data.t)
-            reflector.reflectExitArray()
+            if (reflector.reflectArray(data.t.length, "t")) { // item id
+                reflector.reflectNextInt(data.t)
+                reflector.reflectExitArray()
+            }
             reflector.reflectIntArray(data.c, "c") // count
             reflector.reflectIntArray(data.queue, "queue")
         }
@@ -588,8 +580,8 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectIntArray([], "spclevel")
         reflector.reflectIntArray([], "spcxp")
         // pointer base cspc
-        // pointer base cres
-        reflector.reflectInt(data.cresn, "cresn", 0)
+        // pointer base cres - collected resource
+        reflector.reflectInt(data.cresn, "cresn", 0) // collected resource number
         // pointer base skin
         // pointer base skin2
         reflector.reflectInt(data.skinv, "skinv", 0)
@@ -610,7 +602,7 @@ class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectInt(0, "lx", 0)
         reflector.reflectInt(0, "ly", 0)
         // reflector.reflectOptionalObject("resu")
-        // pointer base rr 3
+        // pointer base rr 3 - requested resource?
         reflector.reflectInt(0, "ra", 0)
         reflector.reflectInt(0, "objId", 0)
         reflector.reflectInt(0, "taskId", 0)
