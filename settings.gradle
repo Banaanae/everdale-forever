@@ -10,7 +10,7 @@ plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
 }
 
-rootProject.name = 'java-sc-core'
+rootProject.name = 'everdale-forever'
 include('app')
 include(":app", ":Blake2b")
 include(":app", ":tweetnacl-java")

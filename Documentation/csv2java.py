@@ -111,11 +111,11 @@ def process_csv(filepath):
             )
 
     # Build Java File
-    java_code = f"""package com.banaanae.javasccore.logic.data.TablesData;
+    java_code = f"""package com.banaanae.foreverdale.logic.data.TablesData;
 
-import com.banaanae.javasccore.logic.data.LogicData;
-import com.banaanae.javasccore.logic.data.LogicDataTable;
-import com.banaanae.javasccore.titan.csv.CSVRow;
+import com.banaanae.foreverdale.logic.data.LogicData;
+import com.banaanae.foreverdale.logic.data.LogicDataTable;
+import com.banaanae.foreverdale.titan.csv.CSVRow;
 import java.util.ArrayList;
 import java.util.List;
 

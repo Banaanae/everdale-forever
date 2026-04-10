@@ -17,9 +17,9 @@ Client download (available when server actually good)
 
 ### Server
 
-1. Start server via `node .`
+1. Compile server (make sure you include Blake2b and tweetnacl)
 2. Open apk then run frida.sh
 
 ## Credits
 - Redirect and arxan killer script by S.B and bread (updated to everdale by me :)
-- Based on [nodebrawl-core](https://github.com/tailsjs/nodebrawl-core/blob/nightly/)
+- Using [java-sc-core](https://github.com/everdale-forever/java-sc-core), which is based on [nodebrawl-core](https://github.com/tailsjs/nodebrawl-core/blob/nightly/)

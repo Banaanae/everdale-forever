@@ -38,7 +38,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'com.banaanae.javasccore.App'
+    mainClass = 'com.banaanae.foreverdale.App'
 }
 
 tasks.named('test') {
