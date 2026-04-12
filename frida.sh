@@ -23,6 +23,10 @@ fi
 
 PORT=${2:-9339}
 
+APP_PATH="com.supercell.everdale"
+ACTIVITY="com.supercell.valleysandvillages.GameApp"
+adb shell am start -n "$APP_PATH/$ACTIVITY"
+
 adb forward tcp:27042 tcp:27042
 ADDRESS="{\"ip\":\"$IP\",\"port\":\"$PORT\"}"
 frida -p $(adb shell pidof com.supercell.everdale) -H 127.0.0.1:27042 -l script.js -P "$ADDRESS"

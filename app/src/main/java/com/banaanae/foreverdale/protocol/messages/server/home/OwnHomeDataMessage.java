@@ -6,6 +6,8 @@ import com.banaanae.foreverdale.titan.datastream.DataStream;
 import com.banaanae.foreverdale.titan.json.LogicJSONObject;
 import com.banaanae.foreverdale.titan.json.LogicJSONParser;
 import com.banaanae.foreverdale.titan.random.LogicRandom;
+import com.banaanae.foreverdale.titan.reflectable.LogicReflectable;
+import com.banaanae.foreverdale.titan.reflectable.LogicReflectableReferenceBase;
 import com.banaanae.foreverdale.titan.reflector.LogicJSONOutReflector;
 import java.util.HexFormat;
 
@@ -63,7 +65,6 @@ public class OwnHomeDataMessage extends PiranhaMessage {
             //final String compressed = zlib.deflateSync(JSON.stringify((this.reflect()).jsonData));
             //this.stream.writeBytes(compressed);
         } else {
-            session.log("1");
             this.stream.writeString(LogicJSONParser.createJSONString(reflect().currentObject, 1024));
         }
 
@@ -94,12 +95,9 @@ public class OwnHomeDataMessage extends PiranhaMessage {
     
     public LogicJSONOutReflector reflect() {
         final LogicJSONOutReflector reflector = new LogicJSONOutReflector(new LogicJSONObject(1024));
-
-        session.log("2");
         reflector.reflectInt(11, "version", 0);
         reflector.reflectInt(0, "debug_a", 0);
         reflector.reflectLong(0, "check_tok", 0);
-        session.log("3");
 
         if (false) { // is not new
             reflector.reflectObject("home");
@@ -136,8 +134,11 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectArray(0, "achievements");
         // ^ if 0 goto LABEL_28
         reflector.reflectArray(0, "progress");
-        session.log("3.1");
-        reflector.reflectArray(0, "variables");
+        /*reflector.reflectNextReflectable(reflectable, 1001);
+        reflector.reflectExitObject();
+        reflector.reflectExitArray();*/
+        
+        reflector.reflectArray(0, "variables"); // also 1001
         reflector.reflectArray(0, "techs");
         reflector.reflectInt(0, "townhall", 0);
 
@@ -157,23 +158,19 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectInt(18, "buildingsNextId", 0);
         reflector.reflectArray(18, "buildings");
         
-        session.log("4");
-        
         Building b = new Building();
-        b.id = 0;
+        b.id = 000;
         b.data = 100000;
         b.x = 33;
         b.y = 33;
         b.lx = 4;
         b.ly = 4;
-        b.t = new int[] {300000, 300026, 300022, 300001, 300020, 300023, 300007, 300008, 300011, 300024, 300025, 300027, 300030, 300031, 300065, 300033, 300034, 300035, 300036, 300065, 300066, 300067, 300068, 300078, 300080, 300083, 300084, 300085, 300086, 300087, 300088, 300089, 300090, 300091, 300092, 300093, 300094, 300095};
+        b.t = new int[] {0, 26, 22, 1, 20, 23, 7, 8, 11, 24, 25, 27, 30, 31, 65, 33, 34, 35, 36, 65, 66, 67, 68, 78, 80, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95};
         b.c = new int[] {5, 0, 2, 250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         b.queue = new int[0];
-        System.out.println("4.05");
         this.reflectBuilding(reflector, b, null);
-        session.log("5");
         b = new Building();
-        b.id = 1;
+        b.id = 100;
         b.data = 100014;
         b.x = 40;
         b.y = 23;
@@ -183,7 +180,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.prod_ms = 14400000;
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 2;
+        b.id = 200;
         b.data = 100002;
         b.x = 38;
         b.y = 29;
@@ -191,18 +188,18 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.ly = 2;
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 3;
+        b.id = 300;
         b.data = 100001;
         b.x = 39;
         b.y = 39;
         b.lx = 2;
         b.ly = 2;
-        b.t = new int[] {300003};
+        b.t = new int[] {3};
         b.c = new int[] {2};
         b.queue = new int[0];
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 4;
+        b.id = 400;
         b.data = 100003;
         b.x = 38;
         b.y = 33;
@@ -211,7 +208,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.spawn_progress = new int[] {1};
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 5;
+        b.id = 500;
         b.data = 100015;
         b.x = 52;
         b.y = 38;
@@ -219,7 +216,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.ly = 2;
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 6;
+        b.id = 600;
         b.data = 100041;
         b.x = 58;
         b.y = 39;
@@ -227,7 +224,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.ly = 2;
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 7;
+        b.id = 700;
         b.data = 100042;
         b.x = 53;
         b.y = 32;
@@ -235,7 +232,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.ly = 3;
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 8;
+        b.id = 800;
         b.data = 100071;
         b.x = 49;
         b.y = 32;
@@ -243,7 +240,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.ly = 3;
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 9;
+        b.id = 900;
         b.data = 100052;
         b.x = 64;
         b.y = 36;
@@ -251,7 +248,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.ly = 2;
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 10;
+        b.id = 1000;
         b.data = 100044;
         b.x = 59;
         b.y = 32;
@@ -259,7 +256,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.ly = 2;
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 11;
+        b.id = 1100;
         b.data = 100010;
         b.x = 41;
         b.y = 48;
@@ -268,7 +265,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.prod_ms = 14400000;
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 12;
+        b.id = 1200;
         b.data = 100007;
         b.x = 50;
         b.y = 15;
@@ -277,7 +274,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.prod_ms = 14400000;
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 13;
+        b.id = 1300;
         b.data = 100007;
         b.x = 12;
         b.y = 54;
@@ -286,7 +283,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.prod_ms = 14400000;
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 14;
+        b.id = 1400;
         b.data = 100010;
         b.x = 17;
         b.y = 16;
@@ -295,7 +292,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.prod_ms = 14400000;
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 15;
+        b.id = 1500;
         b.data = 100028;
         b.x = 27;
         b.y = 54;
@@ -304,7 +301,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.spawn_progress = new int[] {1};
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 16;
+        b.id = 1600;
         b.data = 100028;
         b.x = 12;
         b.y = 33;
@@ -313,7 +310,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         b.spawn_progress = new int[] {1};
         this.reflectBuilding(reflector, b, null);
         b = new Building();
-        b.id = 17;
+        b.id = 1700;
         b.data = 100028;
         b.x = 36;
         b.y = 10;
@@ -326,7 +323,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectInt(11, "obstaclesNextId", 0);
         reflector.reflectArray(11, "obstacles");
         Obstacle o = new Obstacle();
-        o.id = 0;
+        o.id = 002;
         o.data = 500050;
         o.x = 55;
         o.y = 36;
@@ -334,7 +331,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         o.ly = 4;
         this.reflectObstacle(reflector, o);
         o = new Obstacle();
-        o.id = 1;
+        o.id = 102;
         o.data = 500049;
         o.x = 48;
         o.y = 27;
@@ -342,7 +339,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         o.ly = 1;
         this.reflectObstacle(reflector, o);
         o = new Obstacle();
-        o.id = 2;
+        o.id = 202;
         o.data = 500049;
         o.x = 46;
         o.y = 26;
@@ -350,7 +347,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         o.ly = 1;
         this.reflectObstacle(reflector, o);
         o = new Obstacle();
-        o.id = 3;
+        o.id = 302;
         o.data = 500049;
         o.x = 47;
         o.y = 26;
@@ -358,7 +355,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         o.ly = 1;
         this.reflectObstacle(reflector, o);
         o = new Obstacle();
-        o.id = 4;
+        o.id = 402;
         o.data = 500049;
         o.x = 47;
         o.y = 39;
@@ -366,7 +363,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         o.ly = 1;
         this.reflectObstacle(reflector, o);
         o = new Obstacle();
-        o.id = 5;
+        o.id = 502;
         o.data = 500049;
         o.x = 46;
         o.y = 42;
@@ -374,7 +371,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         o.ly = 1;
         this.reflectObstacle(reflector, o);
         o = new Obstacle();
-        o.id = 6;
+        o.id = 602;
         o.data = 500049;
         o.x = 46;
         o.y = 40;
@@ -382,7 +379,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         o.ly = 1;
         this.reflectObstacle(reflector, o);
         o = new Obstacle();
-        o.id = 7;
+        o.id = 702;
         o.data = 500047;
         o.x = 45;
         o.y = 38;
@@ -390,7 +387,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         o.ly = 2;
         this.reflectObstacle(reflector, o);
         o = new Obstacle();
-        o.id = 8;
+        o.id = 802;
         o.data = 500047;
         o.x = 47;
         o.y = 41;
@@ -398,7 +395,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         o.ly = 2;
         this.reflectObstacle(reflector, o);
         o = new Obstacle();
-        o.id = 9;
+        o.id = 902;
         o.data = 500059;
         o.x = 41;
         o.y = 44;
@@ -406,7 +403,7 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         o.ly = 2;
         this.reflectObstacle(reflector, o);
         o = new Obstacle();
-        o.id = 10;
+        o.id = 1002;
         o.data = 500059;
         o.x = 44;
         o.y = 43;
@@ -416,17 +413,13 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectExitArray();
 
         reflector.reflectInt(1, "workersNextId", 0);
-        System.out.println(reflector.currentArray);
         reflector.reflectArray(1, "workers");
         Worker w = new Worker();
         w.id = 0;
         w.data = 3100006;
         w.hunger = 5000;
-        System.out.println("AEAE1");
         this.reflectWorker(reflector, w);
-        System.out.println("AEAE2");
         reflector.reflectExitArray();
-        System.out.println("AEAE3");
 
         reflector.reflectInt(0, "itemsNextId", 0);
         reflector.reflectArray(0, "items");/* remember set 1
@@ -452,14 +445,80 @@ public class OwnHomeDataMessage extends PiranhaMessage {
 
         reflector.reflectRandom(new LogicRandom(1 + (int) Math.floor(Math.random() * 10)), "goRandom");
 
-        reflector.reflectInt(0, "jobsNextId", 0);
-        reflector.reflectArray(0, "jobs");
+        reflector.reflectInt(1, "jobsNextId", 0);
+        reflector.reflectArray(1, "jobs");
+        reflector.reflectNextObject();
+        reflector.reflectInt(100100001, "id", -1);
+        reflector.reflectInt(0, "state", 0);
+        reflector.reflectInt(0, "next", 0);
+        //reflector.reflectReflectablePointerBase prof default: 0x20
+        reflector.reflectInt(3200000, "prof", -1);
+        reflector.reflectLong(1234567890, "create", 0);
+        reflector.reflectInt(1, "type", 0); // 1 or 2; 2 = production building
+        reflector.reflectInt(4, "block", 0);
+        //reflector.reflectReflectablePointerBase inres default: 0x3
+        reflector.reflectInt(300000, "inres", -1);
+        reflector.reflectInt(1, "inrestype", 0);
+        reflector.reflectInt(1, "inrescount", 0);
+        reflector.reflectInt(1, "inresstock", 0);
+        //reflector.reflectReflectablePointerBase harv default: 0x3
+        reflector.reflectInt(300001, "harv", -1);
+        reflector.reflectInt(1, "time", 0);
+        reflector.reflectInt(1, "queuenum", 0);
+        //reflector.reflectReflectableReferenceBase owner default: 0xffffffff
+        //reflector.reflectReflectableReferenceBase item default: 0x3ec
+        //reflector.reflectReflectableReferenceBase target default: 0xffffffff
+        //reflector.reflectReflectableReferenceBase worker default: 0x3eb
+        reflector.reflectBool(false, "paused", false);
+        reflector.reflectBool(false, "resuming", false);
+        reflector.reflectBool(false, "resumed", false);
+        reflector.reflectBool(false, "resumeReady", false);
+        reflector.reflectBool(true, "completed", false);
+        reflector.reflectLong(1234567890, "state_begin", 0);
+        //reflector.reflectReflectablePointerBase tech_d default: 0x24
+        reflector.reflectInt(3600000, "tech_d", -1);
+        //reflector.reflectReflectablePointerBase tool_d default: 0x2a
+        reflector.reflectInt(4200000, "tool_d", -1);
+        reflector.reflectInt(-1, "tool_l", -1);
+        reflector.reflectInt(-1, "slot", -1);
+        reflector.reflectExitObject();
+        reflector.reflectExitArray();
 
-        reflector.reflectInt(0, "sitesNextId", 0);
-        reflector.reflectArray(0, "sites");
+        reflector.reflectInt(1, "sitesNextId", 0);
+        reflector.reflectArray(1, "sites");
+        reflector.reflectNextObject();
+        reflector.reflectInt(0, "id", -1);
+        //reflector.reflectReflectablePointerBase prof default: 0x20
+        reflector.reflectInt(3200000, "prof", -1);
+        reflector.reflectLong(1234567890, "create", 0);
+        reflector.reflectInt(1, "type", 0);
+        //reflector.reflectReflectablePointerBase harv default: 0x3
+        reflector.reflectInt(300001, "harv", -1);
+        reflector.reflectInt(1, "x", 0);
+        reflector.reflectInt(1, "y", 0);
+        reflector.reflectInt(1, "r", 0);
+        reflector.reflectBool(false, "completed", false);
+        //reflector.reflectReflectableReferenceBase "owner", -1);
+        reflector.reflectInt(1, "owner", -1);
+        //reflector.reflectReflectableReferenceBase "ownerC", -1);
+        reflector.reflectInt(1, "ownerC", -1);
+        reflector.reflectReflectableReferenceArrayInternal(new int[0], "j", 1013);
+        reflector.reflectReflectableReferenceArrayInternal(new int[0], "w", 1003);
+        reflector.reflectReflectableReferenceArrayInternal(new int[0], "t", 1002);
+        reflector.reflectInt(5, "maxw", 0);
+        reflector.reflectInt(5, "maxr", 0);
+        reflector.reflectInt(3, "prevr", 0);
+        reflector.reflectBool(false, "walkedTo", false);
+        reflector.reflectBool(false, "locked", false);
+        reflector.reflectInt(-1, "qid", -1);
+        reflector.reflectExitObject();
+        reflector.reflectExitArray();
 
         // sub_33E848
         reflector.reflectArray(0, "instances");
+        /*reflector.reflectNextObject();
+        reflector.reflectExitObject();
+        reflector.reflectExitArray();*/
 
         // sub_6042D0
         //reflector.reflectObject("offerManager");
@@ -481,11 +540,11 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         // worker notes?
         reflector.reflectArray(0, "wnotes");/*
         reflector.reflectNextObject();
-        reflector.reflectLong(0, 1, "home", 0);
-        reflector.reflectBool(false, "res");
+        reflector.reflectLong(1, "home", 0);
+        reflector.reflectBool(false, "res", false);
         reflector.reflectInt(0, "cdata", 0);
         reflector.reflectExitObject();
-        reflector.reflectExitArray()*/
+        reflector.reflectExitArray();*/
 
         reflector.reflectLong(0, "boost_timer", 0);
         reflector.reflectBool(false, "boost_pause", false);
@@ -508,14 +567,9 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectBool(false, "joined_nation", false);
         reflector.reflectInt(0, "own_act_c", 0);
 
-        // 4 dynamic bools
-        // dword_125A9CC qword_125A9D0
         reflector.reflectBool(false, "help_opened", false);
-        // dword_1263AA4 qword_1263AA8
         reflector.reflectBool(false, "map_visited", false);
-        // dword_1267024 qword_1267028
         reflector.reflectBool(false, "time_estimation_seen", false);
-        // dword_125E0EC qword_125E0F0
         reflector.reflectBool(false, "photo_mode_seen", false);
 
         // sub_4BCCB0
@@ -700,7 +754,6 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectInt(0, "known_pc", 0);
         reflector.reflectLong(1, "ch_hash", 0); // TODO
 
-        session.log("3");
         return reflector;
     }
     
@@ -731,11 +784,8 @@ public class OwnHomeDataMessage extends PiranhaMessage {
     }
     
     public void reflectBuilding(LogicJSONOutReflector reflector, Building data, Object stored) {
-        System.out.println("4.1");
         reflector.reflectNextObject();
-        System.out.println("4.2");
         reflector.reflectInt(data.id, "id", -1);
-        System.out.println("4.3");
         reflector.reflectInt(data.data, "data", 0); // pointer base - good enough for now
         reflector.reflectInt(data.lvl, "lvl", 0);
         reflector.reflectInt(data.x, "x", 0);
@@ -757,17 +807,16 @@ public class OwnHomeDataMessage extends PiranhaMessage {
             /*reflector.reflectObject("TaskP");
             reflector.reflectExitObject()*/
         } else if (data.data == 100000 || data.data == 100001) {
-            System.out.println(data.t.length + " " + data.c.length);
             if (reflector.reflectArray(data.t.length, "t") != 0) { // item id
-                for (int i : data.t)
-                    reflector.reflectNextInt(i);
-                System.out.println(12);
+                for (int i : data.t) {
+                    // LogicReflectable o = new LogicResource(i);
+                    // reflector.reflectNextReflectablePointer(o, 3);
+                    reflector.reflectNextInt(300000 + i);
+                }
                 reflector.reflectExitArray();
-                System.out.println(13);
             }
-            System.out.println("c" + data.id);
             reflector.reflectIntArray(data.c, "c"); // count
-            reflector.reflectIntArray(data.queue, "queue");
+            reflector.reflectReflectableReferenceArrayInternal(data.queue, "queue", 1003);
         }
         if (stored != null) {
             reflector.reflectBool(false, "auto", false);
@@ -776,17 +825,15 @@ public class OwnHomeDataMessage extends PiranhaMessage {
             reflector.reflectIntArray(new int[0], "c");
             reflector.reflectIntArray(new int[0], "n");
         }
-        reflector.reflectIntArray(data.m_workers, "m_workers");
+        reflector.reflectReflectableReferenceArrayInternal(data.m_workers, "m_workers", -1);
+        tempRef(reflector, 0,0 ,0);
         reflector.reflectInt(data.state, "state", 0);
         reflector.reflectIntArray(data.sites, "sites");
         reflector.reflectInt(data.orientation, "orientation", 0);
         reflector.reflectInt(data.roofc, "roofc", 0); // ..colour?
         reflector.reflectBool(data.stored, "stored", false);
         // pointer base skin
-        System.out.println("7");
         reflector.reflectExitObject();
-        System.out.println("h");
-        
     }
     
     public class Obstacle extends Base {
@@ -903,7 +950,19 @@ public class OwnHomeDataMessage extends PiranhaMessage {
         reflector.reflectInt(data.hires, "hires", 0);
         // +344LL hangout
         reflector.reflectExitObject();
-        System.out.println("AEAE");
+    }
+    
+    private void tempRef(LogicJSONOutReflector reflector, int challV, int boatV, int cartV) {
+        System.out.println("A");
+        LogicReflectableReferenceBase chall = new LogicReflectableReferenceBase(100500000 + challV);
+        reflector.reflectReflectableReferenceBase(chall, "chall", 1005);
+        System.out.println("B");
+        LogicReflectableReferenceBase boat = new LogicReflectableReferenceBase(100600000 + boatV);
+        reflector.reflectReflectableReferenceBase(boat, "boat", 1006);
+        System.out.println("C");
+        LogicReflectableReferenceBase cart = new LogicReflectableReferenceBase(100700000 + cartV);
+        reflector.reflectReflectableReferenceBase(cart, "cart", 1007);
+        System.out.println("D");
     }
     
     @Override

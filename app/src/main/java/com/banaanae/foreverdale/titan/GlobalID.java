@@ -1,7 +1,7 @@
 package com.banaanae.foreverdale.titan;
 
 public class GlobalID {
-    private static final int CLASS_MULTIPLE = 1000000;
+    private static final int CLASS_MULTIPLE = 100000;
     
     public static int createGlobalId(int classId, int instanceId) {
         return classId * CLASS_MULTIPLE + instanceId;
