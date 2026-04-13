@@ -23,10 +23,10 @@ public class ByteStream extends ChecksumEncoder {
     
     public int readInt() {
         this.bitOffset = 0;
-        return (this.buffer[this.offset++] << 24 | 
-                this.buffer[this.offset++] << 16 |
-                this.buffer[this.offset++] << 8 |
-                this.buffer[this.offset++]);
+        return ((this.buffer[this.offset++] & 0xFF) << 24 | 
+            (this.buffer[this.offset++] & 0xFF) << 16 |
+            (this.buffer[this.offset++] & 0xFF) << 8 |
+            (this.buffer[this.offset++] & 0xFF));
     }
     
     @Override
@@ -230,14 +230,14 @@ public class ByteStream extends ChecksumEncoder {
         int high = this.readInt();
         int low = this.readInt();
         
-        return LogicLong.toLong(high, low);
+        return ((long) high << 32) | (low & 0xFFFFFFFFL);
     }
     
     @Override
     public void writeLongLong(long longLongValue) {
         super.writeLongLong(longLongValue);
         
-        this.writeInt((int) longLongValue >> 32);
+        this.writeInt((int) (longLongValue >>> 32));
         this.writeInt((int) longLongValue);
     }
     
@@ -283,7 +283,9 @@ public class ByteStream extends ChecksumEncoder {
     }
     
     public void writeBytesWithoutLength(byte[] bytesValue) {
-        buffer = ArrayUtils.concat(buffer, bytesValue);
+        if (bytesValue == null) return;
+        ensureCapacity(bytesValue.length);
+        System.arraycopy(bytesValue, 0, this.buffer, this.offset, bytesValue.length);
         this.offset += bytesValue.length;
     }
     

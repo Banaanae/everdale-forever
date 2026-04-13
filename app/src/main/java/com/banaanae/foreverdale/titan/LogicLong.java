@@ -81,8 +81,8 @@ public class LogicLong {
     
     public void set(int high, int low) {
         // why supercell
-        this.high = high >> 32;
-        this.low = low < 0 ? low | 0x80000000 : low & 0x7FFFFFFF;
+        this.high = high;
+        this.low = low;
     }
     
     @Override
@@ -91,7 +91,7 @@ public class LogicLong {
     }
     
     public static long toLong(int high, int low) {
-        return (high << 32) | (low < 0 ? low | 0x80000000 : low & 0x7FFFFFFF);
+        return ((long) high << 32) | (low & 0xFFFFFFFFL);
     }
     
     public long toLong() {
