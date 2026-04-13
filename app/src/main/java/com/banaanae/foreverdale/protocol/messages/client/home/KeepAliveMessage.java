@@ -18,7 +18,6 @@ public class KeepAliveMessage extends PiranhaMessage {
 
     @Override
     public void execute() {
-        // Trimitem răspunsul imediat înapoi
         new KeepAliveServerMessage(this.session).send(true);
     }
 
