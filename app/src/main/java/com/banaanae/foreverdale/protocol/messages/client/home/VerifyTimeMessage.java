@@ -4,6 +4,7 @@ import com.banaanae.foreverdale.Server.Client;
 import com.banaanae.foreverdale.protocol.PiranhaMessage;
 import com.banaanae.foreverdale.protocol.messages.server.home.VerifyTimeResponseMessage;
 import com.banaanae.foreverdale.titan.datastream.DataStream;
+import com.banaanae.foreverdale.titan.xTimer;
 
 public class VerifyTimeMessage extends PiranhaMessage {
     long clientTime;
@@ -16,12 +17,12 @@ public class VerifyTimeMessage extends PiranhaMessage {
     @Override
     public void decode() {
         this.clientTime = this.stream.readLongLong();
-        System.out.println("Client time synchronization requested: " + this.clientTime);
     }
 
     @Override
     public void execute() {
-        new VerifyTimeResponseMessage(this.session).send(true);
+        long serverReceiveTime = xTimer.getNativeTime();
+        new VerifyTimeResponseMessage(this.session, clientTime, serverReceiveTime).send();
     }
 
     @Override

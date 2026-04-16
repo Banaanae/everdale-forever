@@ -1,8 +1,8 @@
-package com.banaanae.foreverdale.protocol.messages.client.home;
+package com.banaanae.foreverdale.protocol.messages.client.auth;
 
 import com.banaanae.foreverdale.Server.Client;
 import com.banaanae.foreverdale.protocol.PiranhaMessage;
-import com.banaanae.foreverdale.protocol.messages.server.home.KeepAliveServerMessage;
+import com.banaanae.foreverdale.protocol.messages.server.auth.KeepAliveServerMessage;
 import com.banaanae.foreverdale.titan.datastream.DataStream;
 
 public class KeepAliveMessage extends PiranhaMessage {
@@ -13,12 +13,11 @@ public class KeepAliveMessage extends PiranhaMessage {
     }
 
     @Override
-    public void decode() {
-    }
+    public void decode() {}
 
     @Override
     public void execute() {
-        new KeepAliveServerMessage(this.session).send(true);
+        new KeepAliveServerMessage(this.session).send();
     }
 
     @Override

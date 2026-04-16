@@ -1,4 +1,4 @@
-package com.banaanae.foreverdale.protocol.messages.server.home;
+package com.banaanae.foreverdale.protocol.messages.server.auth;
 
 import com.banaanae.foreverdale.Server.Client;
 import com.banaanae.foreverdale.protocol.PiranhaMessage;
@@ -13,8 +13,7 @@ public class KeepAliveServerMessage extends PiranhaMessage {
     }
 
     @Override
-    public void encode() {
-    }
+    public void encode() {}
 
     @Override
     public int getMessageType() {
