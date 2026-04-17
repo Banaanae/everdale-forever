@@ -3,14 +3,19 @@ package com.banaanae.foreverdale.logic.reflectable;
 import com.banaanae.foreverdale.titan.reflectable.LogicReflectable;
 import com.banaanae.foreverdale.titan.reflector.LogicJSONOutReflector;
 
-// shit name
-public class Logic1001 extends LogicReflectable {
+public class LogicDataSlot extends LogicReflectable {
+    LogicReflectable d;
+    long c;
+    
+    public LogicDataSlot(LogicReflectable d, long c) {
+        this.d = d;
+        this.c = c;
+    }
     
     @Override
     public void reflect(LogicJSONOutReflector reflector) {
-        LogicReflectable a = new LogicReflectable();
-        reflector.reflectReflectablePointerBase(a, "d");
-        reflector.reflectLong(123, "c", 0);
+        reflector.reflectReflectablePointerBase(d, "d");
+        reflector.reflectLong(c, "c", 0);
     }
     
     @Override
